@@ -1,0 +1,11 @@
+<div class="card" [style]="getCardStyle()">
+  <img *ngIf="data.logo" class="profile-img" [src]="data.logo" alt="Perfil" />
+  <h1>{{ data.nomeCartao }}</h1>
+  <p>Instagram: {{ data.instagram }}</p>
+  <p>WhatsApp: {{ data.whatsapp }}</p>
+  <p>Facebook: {{ data.facebook }}</p>
+  <p>LinkedIn: {{ data.linkedin }}</p>
+  <p>TikTok: {{ data.tiktok }}</p>
+  <p>YouTube: {{ data.youtube }}</p>
+  <p>Site: {{ data.site }}</p>
+</div>

@@ -1,0 +1,438 @@
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'; // Adicione OnInit e inject
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router'; // Importe o ActivatedRoute
+import { TempStorageService } from '../../../services/temp-storage-service';
+import { PageData } from '../../models/page-data.model';
+import { catchError, debounceTime, distinctUntilChanged, filter, of, Subject } from 'rxjs';
+import { timeout } from 'rxjs';
+// ... seus outros imports
+
+@Component({
+  selector: 'app-edit-page',
+  standalone: true, // Garanta que está como standalone se for o caso
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+
+  ],
+  templateUrl: './edit-page.html',
+  styleUrl: './edit-page.scss',
+})
+export class EditPage implements OnInit {
+  serialKey: string = '';
+  pageData: PageData | null = null;
+  loaded: boolean = false;
+  loading: boolean = false;
+  tempFile: File | null = null; // Armazena o arquivo temporariamente
+  tempBackgroundFile: File | null = null;
+  showFullBackground: boolean = false;
+  isFullscreenPreview: boolean = false;
+  logoBackgroundBlobUrl: string | null = null;
+  originalBackground: string = '';
+  backgroundHasChanged: boolean = false;
+  gradientPresets = [
+  { name: 'Sunset', value: 'linear-gradient(135deg, #FF6B6B, #FFE66D)' },
+  { name: 'Ocean', value: 'linear-gradient(135deg, #36D1DC, #5B86E5)' },
+  { name: 'Forest', value: 'linear-gradient(135deg, #56AB2F, #A8E063)' },
+  { name: 'Lavender', value: 'linear-gradient(135deg, #8E2DE2, #4A00E0)' },
+  { name: 'Coral', value: 'linear-gradient(135deg, #FF5F6D, #FFC371)' },
+  { name: 'Sky', value: 'linear-gradient(135deg, #00C9FF, #92FE9D)' },
+  { name: 'Berry', value: 'linear-gradient(135deg, #FF5E62, #FF9966)' },
+  { name: 'Mint', value: 'linear-gradient(135deg, #00B09B, #96C93D)' },
+  { name: 'Rose', value: 'linear-gradient(135deg, #FF086E, #FF8C8C)' },
+  { name: 'Night', value: 'linear-gradient(135deg, #0F2027, #203A43, #2C5364)' },
+  { name: 'Desert', value: 'linear-gradient(135deg, #C02425, #F0CB35)' },
+  { name: 'Iris', value: 'linear-gradient(135deg, #5D26C1, #A17FE0)' }
+  ];
+  // Variáveis para gradiente customizado
+  showCustomGradient: boolean = false;
+  customColor1: string = '#FF6B6B';
+  customColor2: string = '#FFE66D';
+  gradientAngle: number = 135;
+  customGradientValue: string = '';
+  // Injeções modernas
+  private http = inject(HttpClient);
+  private route = inject(ActivatedRoute);
+  private sanitizer = inject(DomSanitizer);
+  private cdr = inject(ChangeDetectorRef);
+  private tempStorage = inject(TempStorageService);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
+  private saveSubject = new Subject<void>();
+
+  ngOnInit(): void {
+    // 1. Pega o serial da URL (configurada como /edit/:serialKey)
+    const keyFromUrl = this.route.snapshot.paramMap.get('serialKey');
+
+    if (keyFromUrl) {
+      this.serialKey = keyFromUrl;
+      this.loadPage(); // 2. Carrega os dados automaticamente
+    }
+    this.updateCustomGradient();
+      this.saveSubject.pipe(
+      debounceTime(2000), // Aguarda 2 segundos sem alterações
+      distinctUntilChanged()
+    ).subscribe(() => {
+      // Auto-save opcional
+      // this.autoSave();
+    });
+  }
+  showError(message: string): void {
+    this.snackBar.open(message, 'Fechar', {
+      duration: 5000,
+      panelClass: ['error-snackbar']
+    });
+  }
+  loadPage() {
+  if (!this.serialKey) return;
+
+  this.loading = true;
+  this.pageData = null;
+
+  const url = `http://localhost:8080/pagina/${this.serialKey}`;
+
+  // Usar pipe com operadores RxJS para otimizar
+  this.http.get<PageData>(url).pipe(
+    // Adicionar timeout para não ficar travado em conexões lentas
+    timeout(30000),
+    // Tratar erros de forma mais elegante
+    catchError((error) => {
+      console.error('Falha na API:', error);
+      this.loading = false;
+      this.loaded = true;
+      this.showError('Falha ao carregar dados. Verifique sua conexão.');
+      return of(null); // Retorna observable vazio
+    }),
+    // Filtrar dados nulos
+    filter(data => data !== null)
+  ).subscribe({
+    next: (data) => {
+      this.pageData = data;
+
+      // Carregar do localStorage de forma assíncrona para não bloquear
+      setTimeout(() => {
+        const tempLogo = localStorage.getItem(`temp_logo_${this.serialKey}`);
+        if (tempLogo && this.pageData) {
+          try {
+            const tempData = JSON.parse(tempLogo);
+            this.pageData.logo = tempData.base64;
+          } catch (e) {
+            console.error('Erro ao parsear logo do localStorage:', e);
+          }
+        }
+
+        this.loaded = true;
+        this.loading = false;
+        this.cdr.detectChanges();
+      }, 0);
+    }
+  });
+}
+  // Adicione 'logo' no PageData se ainda não existir no seu modelo
+  // No método loadPage, certifique-se de que pageData.logo receba a URL do banco
+  onBackgroundSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (!file) return;
+    if (file) {
+      // Libera blob anterior se existir
+      if (this.logoBackgroundBlobUrl) {
+        URL.revokeObjectURL(this.logoBackgroundBlobUrl);
+      }
+      // Gera novo blob
+      this.logoBackgroundBlobUrl = URL.createObjectURL(file);
+      this.tempBackgroundFile = file;
+    }
+    // Validação
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const maxSize = 5 * 1024 * 1024;
+
+    if (!validTypes.includes(file.type)) {
+      alert('Tipo de arquivo inválido. Use apenas imagens (JPEG, PNG, GIF, WEBP)');
+      return;
+    }
+
+    if (file.size > maxSize) {
+      alert('Arquivo muito grande. Máximo 5MB');
+      return;
+    }
+
+    this.tempBackgroundFile = file;
+
+    // Cria preview
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (this.pageData) {
+        // Armazena temporariamente como base64
+        this.pageData.logoBackground = e.target.result;
+
+        // Salva no localStorage
+        localStorage.setItem(
+          `temp_logoBackground_${this.serialKey}`,
+          JSON.stringify({
+            base64: e.target.result,
+            fileName: file.name,
+            fileType: file.type,
+            timestamp: Date.now(),
+          }),
+        );
+
+        this.cdr.detectChanges();
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+  // No ngOnDestroy (importante para liberar memória)
+  ngOnDestroy(): void {
+    if (this.logoBackgroundBlobUrl) {
+      URL.revokeObjectURL(this.logoBackgroundBlobUrl);
+    }
+  }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (!file) return;
+    // Validação
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+    const maxSize = 5 * 1024 * 1024;
+    if (!validTypes.includes(file.type)) {
+      alert('Tipo de arquivo inválido. Use apenas imagens (JPEG, PNG, GIF, WEBP, SVG)');
+      return;
+    }
+    if (file.size > maxSize) {
+      alert('Arquivo muito grande. Máximo 5MB');
+      return;
+    }
+    if (file) {
+      // 1. Criar preview local imediato (Base64)
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        if (this.pageData) {
+          this.pageData.logo = e.target.result; // Preenche a div instantaneamente
+          // Salva no localStorage para persistir
+          localStorage.setItem(
+            `temp_logo_${this.serialKey}`,
+            JSON.stringify({
+              base64: e.target.result,
+              fileName: file.name,
+              fileType: file.type,
+              timestamp: Date.now(),
+            }),
+          );
+          this.cdr.detectChanges();
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  removeTempLogo(event?: Event): void {
+    if(event){
+      event.stopPropagation();
+    }
+    if (this.pageData) {
+      this.pageData.logo = null;
+      this.tempFile = null;
+      localStorage.removeItem(`temp_logo_${this.serialKey}`);
+      this.cdr.detectChanges();
+    }
+  }
+  getLogoStyle(): SafeStyle {
+  if (!this.pageData?.logo || this.pageData.logo === 'null' || this.pageData.logo === '') {
+      return this.sanitizer.bypassSecurityTrustStyle('none');
+  }
+  return this.sanitizer.bypassSecurityTrustStyle(`url('${this.pageData.logo}')`);
+  }
+  getBackgroundStyle(): string {
+      // Se tem arquivo temporário, gera blob URL uma vez
+  if (this.tempBackgroundFile && !this.logoBackgroundBlobUrl) {
+    this.logoBackgroundBlobUrl = URL.createObjectURL(this.tempBackgroundFile);
+  }
+
+  // Se tem logoBackground do servidor
+  if (this.pageData?.logoBackground) {
+    if (this.pageData.logoBackground.startsWith('http')) {
+      return `url('${this.pageData.logoBackground}') center/cover no-repeat fixed`;
+    } else if (this.pageData.logoBackground.startsWith('#')) {
+      return this.pageData.logoBackground;
+    }
+  }
+    // Se tem blob URL temporário
+  if (this.logoBackgroundBlobUrl) {
+    return `url('${this.logoBackgroundBlobUrl}') center/cover no-repeat fixed`;
+  }
+
+  return 'none';
+  }
+
+  hasBackgroundImage(): boolean {
+    // Verifica se tem imagem temporária OU logoBackground do banco
+    return !!this.tempBackgroundFile ||
+          !!(this.pageData?.logoBackground && this.pageData.logoBackground.startsWith('http'));
+  }
+  savePage() {
+    if (!this.pageData) return;
+  // Verificar se está tentando enviar ambos
+  const hasBackground = this.pageData.background && this.pageData.background.trim() !== '';
+  const hasLogoBackground = this.pageData.logoBackground && this.pageData.logoBackground.trim() !== '';
+  const hasTempBackground = !!this.tempBackgroundFile;
+
+  if ((hasBackground || hasTempBackground) && hasLogoBackground) {
+    this.showError('Você só pode ter um fundo por vez: fundo da página OU fundo do logo. Remova um deles.');
+    return;
+  }
+  }
+
+  public savePageData() {
+    this.loading = true;
+    const urlEdit = `http://localhost:8080/pagina/${this.serialKey}`;
+    this.http.put(urlEdit, this.pageData).subscribe({
+      next: () => {
+        alert('Página salva com sucesso!');
+        this.loading = false;
+        this.loaded = true;
+      },
+      error: (error) => {
+        alert('Erro ao salvar página.');
+        this.loading = false;
+      },
+    });
+  }
+  // No método que remove o logoBackground temporário
+  removeTempBackground(): void {
+    if (this.logoBackgroundBlobUrl) {
+      URL.revokeObjectURL(this.logoBackgroundBlobUrl); // Libera memória
+      this.logoBackgroundBlobUrl = null;
+    }
+    this.tempBackgroundFile = null;
+  }
+  // Método para remover imagem de logoBackground existente
+  removeBackgroundImage() {
+    if (this.pageData && this.pageData.logoBackground.startsWith('http')) {
+      // Aqui você poderia chamar um endpoint para deletar a imagem do servidor
+      this.pageData.logoBackground = '';
+      this.cdr.detectChanges();
+    }
+  }
+  toggleBackgroundPreview() {
+    this.showFullBackground = !this.showFullBackground;
+  }
+  getPageBackground(): string {
+    if (!this.pageData?.logoBackground) return '';
+
+    if (this.showFullBackground || this.isFullscreenPreview) {
+      if (this.pageData.logoBackground.startsWith('#')) {
+        return this.pageData.logoBackground;
+      } else {
+        return `url('${this.pageData.logoBackground}')`;
+      }
+    }
+
+    return '';
+  }
+  toggleFullscreenPreview() {
+    this.isFullscreenPreview = !this.isFullscreenPreview;
+    if (this.isFullscreenPreview) {
+      document.body.classList.add('fullscreen-preview');
+    } else {
+      document.body.classList.remove('fullscreen-preview');
+    }
+  }
+  onBackgroundChanged() {
+    if (this.pageData?.logoBackground) {
+      // Se for uma cor hexadecimal, mostra preview
+      if (this.pageData.logoBackground.startsWith('#')) {
+        this.showFullBackground = true;
+      }
+      this.cdr.detectChanges();
+    }
+  }
+  // Selecionar gradiente pré-definido
+selectGradient(gradient: string): void {
+  if (this.pageData) {
+    this.pageData.background = gradient;
+    // Remove arquivo temporário se existir
+    if (this.tempBackgroundFile) {
+      this.tempBackgroundFile = null;
+    }
+
+  }
+}
+
+// Atualizar preview do gradiente customizado
+updateCustomGradient(): void {
+  this.customGradientValue = `linear-gradient(${this.gradientAngle}deg, ${this.customColor1}, ${this.customColor2})`;
+  console.log('customGradientValue:', this.customGradientValue);
+  this.cdr.detectChanges();
+
+}
+
+// Aplicar gradiente customizado
+applyCustomGradient(): void {
+  if (this.pageData) {
+    this.pageData.background = this.customGradientValue;
+    // Remove arquivo temporário se existir
+    if (this.tempBackgroundFile) {
+      this.tempBackgroundFile = null;
+    }
+    this.showCustomGradient = false;
+     this.snackBar.open('Gradiente aplicado localmente. Clique em "Salvar Todas as Alterações" para confirmar.', 'OK', {
+      duration: 3000
+    });
+  }
+}
+
+// Verificar se é gradiente
+isGradient(value: string): boolean {
+  return value?.includes('linear-gradient') || value?.includes('radial-gradient');
+}
+getColorFromBackground(): string {
+  if (this.pageData?.background?.startsWith('#')) {
+    return this.pageData.background;
+  }
+  return '#FFFFFF'; // Cor padrão
+}
+// Quando o usuário seleciona cor no picker
+onColorPickerChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const color = input.value;
+
+  if (this.pageData) {
+    this.pageData.background = color;
+  }
+}
+removeBackground(): void {
+  // Remove cor/gradiente do campo
+  if (this.pageData) {
+    this.pageData.background = '';
+  }
+
+  // Remove arquivo temporário de imagem
+  if (this.tempBackgroundFile) {
+    this.tempBackgroundFile = null;
+  }
+
+  // Limpa editor de gradiente
+  this.showCustomGradient = false;
+
+  // Atualiza visualização
+  this.cdr.detectChanges();
+}
+toggleCustomGradient(event: Event): void {
+  event.preventDefault(); // Previne o comportamento padrão
+  event.stopPropagation(); // Para a propagação do evento
+  this.showCustomGradient = !this.showCustomGradient;
+}
+}

@@ -1,0 +1,357 @@
+<div class="container">
+  <h1>📋 Gerenciamento de Páginas</h1>
+  
+  <!-- Status Cards -->
+  <div class="status-cards">
+    <div class="status-card">
+      <div class="status-icon">📄</div>
+      <div class="status-info">
+        <div class="status-label">Total de Páginas</div>
+        <div class="status-value">{{ totalPaginasContagem }}</div>
+      </div>
+    </div>
+    
+    <div class="status-card">
+      <div class="status-icon">✅</div>
+      <div class="status-info">
+        <div class="status-label">Com Dados</div>
+        <div class="status-value">{{ paginasComDados }}</div>
+      </div>
+    </div>
+    
+    <div class="status-card">
+      <div class="status-icon">⏳</div>
+      <div class="status-info">
+        <div class="status-label">Em Branco</div>
+        <div class="status-value">{{ paginasEmBranco }}</div>
+      </div>
+    </div>
+    
+    <div class="status-card">
+      <div class="status-icon">🔍</div>
+      <div class="status-info">
+        <div class="status-label">Filtradas</div>
+        <div class="status-value">{{ paginasFiltradasContagem }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros">
+    <h3>🔍 Filtros</h3>
+    <div class="filtros-grid">
+      <div class="filtro-item">
+        <label for="filtroNome">Nome</label>
+        <input 
+          type="text" 
+          id="filtroNome" 
+          [(ngModel)]="filtroNome" 
+          placeholder="Filtrar por nome..."
+          (input)="calcularPaginacao()"
+        />
+      </div>
+      
+      <div class="filtro-item">
+        <label for="filtroSerialKey">Serial Key</label>
+        <input 
+          type="text" 
+          id="filtroSerialKey" 
+          [(ngModel)]="filtroSerialKey" 
+          placeholder="Filtrar por serial key..."
+          (input)="calcularPaginacao()"
+        />
+      </div>
+      
+      <div class="filtro-item">
+        <label for="filtroTipo">Tipo</label>
+        <select 
+          id="filtroTipo" 
+          [(ngModel)]="filtroTipo"
+          (change)="calcularPaginacao()"
+        >
+          <option value="">Todos os tipos</option>
+          <option value="photographer">Fotógrafo</option>
+          <option value="restaurant">Restaurante</option>
+          <option value="personal">Pessoal</option>
+        </select>
+      </div>
+      
+      <div class="filtro-item">
+        <label>&nbsp;</label>
+        <button (click)="resetarFiltros()" class="btn-resetar">
+          🔄 Limpar Filtros
+        </button>
+        <button (click)="carregarPaginas()" class="btn-recargar">
+          🔄 Recarregar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading e Erro -->
+  <div *ngIf="carregando" class="loading">
+    <div class="spinner"></div>
+    <p>Carregando páginas...</p>
+  </div>
+  
+  <div *ngIf="erro" class="erro">
+    ❌ {{ erro }}
+    <button (click)="carregarPaginas()">Tentar novamente</button>
+  </div>
+
+  <!-- Tabela de Páginas -->
+  <div *ngIf="!carregando && !erro" class="tabela-container">
+    <div class="tabela-header">
+      <div class="resultados-info">
+        Mostrando {{ paginasPaginaAtual.length }} de {{ paginasFiltradasContagem }} páginas
+      </div>
+      <div class="itens-por-pagina">
+        <label for="itensPorPagina">Itens por página:</label>
+        <select 
+          id="itensPorPagina" 
+          [(ngModel)]="itensPorPagina"
+          (change)="paginaAtual = 1; calcularPaginacao()"
+        >
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="tabela-responsive">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th (click)="ordenar('id')" class="ordenavel">
+              ID 
+              <span *ngIf="ordenarPor === 'id'">
+                {{ ordemAscendente ? '▲' : '▼' }}
+              </span>
+            </th>
+            <th (click)="ordenar('nomeCartao')" class="ordenavel">
+              Nome 
+              <span *ngIf="ordenarPor === 'nomeCartao'">
+                {{ ordemAscendente ? '▲' : '▼' }}
+              </span>
+            </th>
+            <th (click)="ordenar('serialKey')" class="ordenavel">
+              Serial Key 
+              <span *ngIf="ordenarPor === 'serialKey'">
+                {{ ordemAscendente ? '▲' : '▼' }}
+              </span>
+            </th>
+            <th>Tipo</th>
+            <th>Contatos</th>
+            <th>Criado</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pagina of paginasPaginaAtual" 
+              [class.pagina-em-branco]="!pagina.nomeCartao && !pagina.instagram && !pagina.whatsapp">
+            <td class="id">{{ pagina.id }}</td>
+            <td>
+              <div class="nome-cartao" [class.vazio]="!pagina.nomeCartao">
+                {{ pagina.nomeCartao || '(Sem nome)' }}
+              </div>
+            </td>
+            <td>
+              <div class="serial-key">
+                <code>{{ pagina.serialKey }}</code>
+                <button (click)="copiarSerialKey(pagina.serialKey)" 
+                        class="btn-copiar" 
+                        title="Copiar Serial Key">
+                  📋
+                </button>
+              </div>
+            </td>
+            <td>
+              <span class="badge" [class]="'tipo-' + (pagina.typePage || 'vazio')">
+                {{ pagina.typePage || 'Não definido' }}
+              </span>
+            </td>
+            <td>
+              <div class="contatos">
+                <span *ngIf="pagina.instagram" class="contato instagram" title="Instagram">📸</span>
+                <span *ngIf="pagina.whatsapp" class="contato whatsapp" title="WhatsApp">💬</span>
+                <span *ngIf="pagina.email" class="contato email" title="Email">📧</span>
+                <span *ngIf="pagina.facebook" class="contato facebook" title="Facebook">👍</span>
+                <span *ngIf="pagina.site" class="contato site" title="Site">🌐</span>
+                <span *ngIf="!pagina.instagram && !pagina.whatsapp && !pagina.email" class="contato-vazio">
+                  Nenhum
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="data-criacao">
+                {{ pagina.createdAt | date:'dd/MM/yyyy' }}
+              </div>
+            </td>
+            <td>
+              <div class="acoes">
+                <button (click)="abrirDetalhes(pagina)" 
+                        class="btn-detalhes" 
+                        title="Ver detalhes">
+                  👁️
+                </button>
+                <button (click)="copiarLinkAcesso(pagina.serialKey)" 
+                        class="btn-link" 
+                        title="Copiar link de acesso">
+                  🔗
+                </button>
+                <button (click)="deletarPagina(pagina.id)" 
+                        class="btn-deletar" 
+                        title="Excluir página"
+                        *ngIf="pagina.id">
+                  🗑️
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginação -->
+    <div *ngIf="totalPaginas > 1" class="paginacao">
+      <button (click)="mudarPagina(1)" [disabled]="paginaAtual === 1">
+        ⏮️
+      </button>
+      <button (click)="mudarPagina(paginaAtual - 1)" [disabled]="paginaAtual === 1">
+        ◀️
+      </button>
+      
+      <span class="pagina-info">
+        Página {{ paginaAtual }} de {{ totalPaginas }}
+      </span>
+      
+      <button (click)="mudarPagina(paginaAtual + 1)" [disabled]="paginaAtual === totalPaginas">
+        ▶️
+      </button>
+      <button (click)="mudarPagina(totalPaginas)" [disabled]="paginaAtual === totalPaginas">
+        ⏭️
+      </button>
+    </div>
+
+    <!-- Mensagem quando não há páginas -->
+    <div *ngIf="paginasFiltradasContagem === 0" class="sem-resultados">
+      <p>📭 Nenhuma página encontrada</p>
+      <button (click)="resetarFiltros()">Limpar filtros</button>
+    </div>
+  </div>
+
+  <!-- Modal de Detalhes -->
+  <div *ngIf="mostrarModal" class="modal-overlay" (click)="fecharModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Detalhes da Página</h2>
+        <button (click)="fecharModal()" class="btn-fechar">×</button>
+      </div>
+      
+      <div *ngIf="paginaDetalhes" class="modal-content">
+        <div class="detalhes-grid">
+          <div class="detalhe-item">
+            <label>ID:</label>
+            <span>{{ paginaDetalhes.id }}</span>
+          </div>
+          
+          <div class="detalhe-item">
+            <label>Nome:</label>
+            <span>{{ paginaDetalhes.nomeCartao || '(Não definido)' }}</span>
+          </div>
+          
+          <div class="detalhe-item">
+            <label>Serial Key:</label>
+            <div class="serial-key-detalhe">
+              <code>{{ paginaDetalhes.serialKey }}</code>
+              <button (click)="copiarSerialKey(paginaDetalhes.serialKey)">
+                Copiar
+              </button>
+            </div>
+          </div>
+          
+          <div class="detalhe-item">
+            <label>Tipo:</label>
+            <span>{{ paginaDetalhes.typePage || '(Não definido)' }}</span>
+          </div>
+          
+          <div class="detalhe-item">
+            <label>Link de Acesso:</label>
+            <div class="link-detalhe">
+              <a [href]="gerarLinkAcesso(paginaDetalhes.serialKey)" target="_blank">
+                {{ gerarLinkAcesso(paginaDetalhes.serialKey) }}
+              </a>
+              <button (click)="copiarLinkAcesso(paginaDetalhes.serialKey)">
+                Copiar
+              </button>
+            </div>
+          </div>
+          
+          <div class="detalhe-item full-width">
+            <label>Contatos:</label>
+            <div class="contatos-detalhe">
+              <div *ngIf="paginaDetalhes.instagram">
+                <strong>Instagram:</strong> {{ paginaDetalhes.instagram }}
+              </div>
+              <div *ngIf="paginaDetalhes.whatsapp">
+                <strong>WhatsApp:</strong> {{ paginaDetalhes.whatsapp }}
+              </div>
+              <div *ngIf="paginaDetalhes.email">
+                <strong>Email:</strong> {{ paginaDetalhes.email }}
+              </div>
+              <div *ngIf="paginaDetalhes.facebook">
+                <strong>Facebook:</strong> {{ paginaDetalhes.facebook }}
+              </div>
+              <div *ngIf="paginaDetalhes.linkedin">
+                <strong>LinkedIn:</strong> {{ paginaDetalhes.linkedin }}
+              </div>
+              <div *ngIf="paginaDetalhes.tiktok">
+                <strong>TikTok:</strong> {{ paginaDetalhes.tiktok }}
+              </div>
+              <div *ngIf="paginaDetalhes.youtube">
+                <strong>YouTube:</strong> {{ paginaDetalhes.youtube }}
+              </div>
+              <div *ngIf="paginaDetalhes.site">
+                <strong>Site:</strong> {{ paginaDetalhes.site }}
+              </div>
+              <div *ngIf="!paginaDetalhes.instagram && !paginaDetalhes.whatsapp">
+                Nenhum contato cadastrado
+              </div>
+            </div>
+          </div>
+          
+          <div class="detalhe-item">
+            <label>Background:</label>
+            <div *ngIf="paginaDetalhes.background" 
+                 class="color-preview" 
+                 [style.background-color]="paginaDetalhes.background"
+                 [title]="paginaDetalhes.background">
+            </div>
+            <span *ngIf="!paginaDetalhes.background">(Não definido)</span>
+          </div>
+          
+          <div class="detalhe-item">
+            <label>Criado em:</label>
+            <span>{{ paginaDetalhes.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          
+          <div class="detalhe-item">
+            <label>Atualizado em:</label>
+            <span>{{ paginaDetalhes.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        </div>
+        
+        <div class="modal-actions">
+          <button (click)="copiarLinkAcesso(paginaDetalhes.serialKey)" class="btn-primary">
+            📋 Copiar Link
+          </button>
+          <button (click)="fecharModal()" class="btn-secondary">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

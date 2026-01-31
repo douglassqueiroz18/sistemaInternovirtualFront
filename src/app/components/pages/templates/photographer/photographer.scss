@@ -1,0 +1,527 @@
+/* Cores universais para cards escuros */
+:root {
+  --card-bg: rgba(26, 26, 26, 0.95); /* 95% opaco - quase sólido */
+  --card-bg-solid: #1a1a1a; /* Sólido para fallback */
+  --card-bg-hover: rgba(37, 37, 37, 0.98);
+  --card-text: #ffffff;
+  --card-text-secondary: #b0b0b0;
+  --card-border: rgba(255, 255, 255, 0.15);
+  --card-border-hover: rgba(255, 94, 98, 0.6);
+  --card-icon-bg: linear-gradient(135deg, #ff5e62, #ff9966);
+  --card-title: #aaaaaa;
+  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  --card-shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.9);
+  
+  /* Cores de destaque */
+  --accent-primary: #ff5e62;
+  --accent-secondary: #ff9966;
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+}
+
+/* Reset e base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Card principal - Funciona com qualquer fundo */
+.card {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  overflow-x: hidden;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+/* Overlay universal ESCURO para qualquer background */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6); /* Mais escuro para melhor contraste */
+  z-index: 0;
+}
+
+/* Container principal */
+.photographer-container {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: 40px 20px;
+}
+
+/* Header com foto */
+.photographer-header {
+  margin-bottom: 50px;
+}
+
+/* Aro da lente como frame da foto */
+.lens-frame {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 30px;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 1px solid rgba(255, 94, 98, 0.7);
+    border-radius: 50%;
+  }
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 8px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--card-bg-solid);
+  
+  &:hover {
+    transform: scale(1.03);
+    border-color: rgba(255, 94, 98, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 1);
+  }
+}
+
+.camera-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--card-bg-solid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 8px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+  
+  mat-icon {
+    font-size: 64px;
+    color: var(--accent-primary);
+    opacity: 0.9;
+  }
+}
+
+/* Nome do fotógrafo */
+.photographer-name {
+  font-size: 2.8rem;
+  font-weight: 300;
+  margin: 20px 0 10px;
+  letter-spacing: 1px;
+  position: relative;
+  display: inline-block;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+  }
+}
+
+.profession-tag {
+  display: inline-block;
+  background: rgba(26, 26, 26, 0.9);
+  color: white;
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-top: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Grid de contatos - Cards ESCUROS e SÓLIDOS */
+.contact-card {
+  /* Força o PRETO absoluto no fundo e na borda */
+  background: #000000 !important; 
+  border: 1px solid #000000 !important; 
+  
+  border-radius: 16px;
+  padding: 25px;
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--card-shadow);
+  color: #ffffff; 
+  position: relative;
+  overflow: hidden;
+
+  /* Efeito de brilho sutil no topo para não ficar "chapado" demais */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    z-index: 2;
+  }
+  
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    background: #080808 !important; /* Quase preto no hover para dar feedback visual */
+    border-color: var(--card-border-hover) !important; /* Aqui a borda brilha no hover conforme seu tema */
+    box-shadow: var(--card-shadow-hover);
+    
+    .contact-icon {
+      transform: rotate(5deg) scale(1.1);
+    }
+  }
+  
+  .contact-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 3;
+    
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--card-icon-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      
+      mat-icon {
+        color: white;
+        font-size: 20px;
+      }
+    }
+    
+    .contact-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #aaaaaa; /* Cor cinza clara para o título */
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+
+.contact-card {
+  background: var(--card-bg-solid) !important; /* SÓLIDO E ESCURO */
+  border-radius: 16px;
+  padding: 25px;
+  text-align: left;
+  border: 1px solid var(--card-border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--card-shadow);
+  color: var(--card-text);
+  position: relative;
+  overflow: hidden;
+  
+  /* Efeito de brilho sutil */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  }
+  .contact-icon {
+    background: rgba(255, 255, 255, 0.1); /* Um círculo sutil cinza para o ícone não sumir no preto */
+}
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    background: var(--card-bg-solid) !important; /* Mantém sólido no hover */
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover);
+    
+    .contact-icon {
+      transform: rotate(5deg) scale(1.1);
+    }
+  }
+  
+  .contact-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--card-icon-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      
+      mat-icon {
+        color: white;
+        font-size: 20px;
+      }
+    }
+    
+    .contact-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--card-title);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+  
+  .contact-content {
+    position: relative;
+    z-index: 3;
+
+    .contact-link {
+      color: #ffffff !important;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+      display: block;
+      transition: color 0.3s ease;
+      line-height: 1.4;
+      
+      &:hover {
+        color: var(--accent-primary) !important;
+      }
+    }
+    
+    .contact-text {
+      color: #b0b0b0;
+      font-size: 16px;
+      line-height: 1.4;
+      margin-top: 8px;
+      font-weight: 300;
+    }
+  }
+} 
+}
+
+/* Botão de ação principal */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  padding: 18px 40px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 40px 0;
+  box-shadow: 
+    0 10px 40px rgba(255, 94, 98, 0.4),
+    0 0 0 0 rgba(255, 94, 98, 0.4);
+  position: relative;
+  z-index: 3;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+      0 20px 50px rgba(255, 94, 98, 0.6),
+      0 0 0 10px rgba(255, 94, 98, 0.15);
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+  }
+  
+  mat-icon {
+    font-size: 22px;
+  }
+}
+
+/* Footer elegante */
+.photographer-footer {
+  margin-top: 60px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
+  position: relative;
+  z-index: 3;
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .copyright {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+  
+  .signature {
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    
+    .highlight {
+      color: var(--accent-primary);
+      font-weight: 500;
+    }
+  }
+}
+
+/* Animações */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .photographer-container {
+    padding: 30px 15px;
+  }
+  
+  .lens-frame {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .photographer-name {
+    font-size: 2.2rem;
+  }
+  
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .contact-card {
+    padding: 20px;
+  }
+  
+  .cta-button {
+    padding: 16px 32px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 15px;
+  }
+  
+  .lens-frame {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .photographer-name {
+    font-size: 1.8rem;
+  }
+  
+  .contact-card {
+    padding: 18px;
+    
+    .contact-content {
+      .contact-link {
+        font-size: 16px;
+      }
+      
+      .contact-text {
+        font-size: 14px;
+      }
+    }
+  }
+  
+  .cta-button {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+    padding: 14px 28px;
+    font-size: 14px;
+  }
+}
+
+/* Acessibilidade - Foco visível */
+.cta-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 4px;
+}
+
+.contact-link:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Garantir que cards sejam sempre visíveis */
+.contact-card * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Se ainda tiver transparência, adicione esta regra */
+.contact-grid > * {
+  opacity: 1 !important;
+  visibility: visible !important;
+}

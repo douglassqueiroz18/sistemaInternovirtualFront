@@ -1,0 +1,92 @@
+<div class="menu-container">
+  <header class="menu-header">
+    <h1>📱 Virtual NFC Cards</h1>
+    <p class="subtitulo">Sistema de gerenciamento de páginas digitais</p>
+  </header>
+
+  <div class="menu-content">
+    <!-- Acesso rápido com serial key -->
+    <div class="acesso-rapido">
+      <h2>🔑 Acesso Rápido</h2>
+      <div class="input-group">
+        <input 
+          type="text" 
+          [(ngModel)]="serialKeyInput" 
+          placeholder="Digite a serial key da página..."
+          class="serial-input"
+          (keyup.enter)="navegarParaRota({path: '/page/', precisaSerialKey: true})"
+        />
+        <div class="botoes-rapidos">
+          <button 
+            (click)="navegarParaRota({path: '/page/', precisaSerialKey: true})"
+            [disabled]="!serialKeyInput"
+            class="btn-visualizar"
+          >
+            👁️ Visualizar
+          </button>
+          <button 
+            (click)="navegarParaRota({path: '/edit/', precisaSerialKey: true})"
+            [disabled]="!serialKeyInput"
+            class="btn-editar"
+          >
+            ✏️ Editar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid de funcionalidades -->
+    <div class="funcionalidades-grid">
+      <h2>🚀 Funcionalidades</h2>
+      
+      <div class="grid">
+        <!-- Criar Múltiplas -->
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-content">
+            <h3>Criar em Massa</h3>
+            <p>Gere várias páginas em branco de uma só vez</p>
+          </div>
+          <div class="card-actions">
+            <a [routerLink]="['/criar-pagina']" [queryParams]="{modo: 'batch'}" class="btn-card">
+              Criar em Lote
+            </a>
+          </div>
+        </div>
+
+        <!-- Gerenciar Páginas -->
+        <div class="card">
+          <div class="card-icon">📋</div>
+          <div class="card-content">
+            <h3>Gerenciar</h3>
+            <p>Visualize e gerencie todas as páginas criadas</p>
+          </div>
+          <div class="card-actions">
+            <a [routerLink]="['/mostrar-paginas']" class="btn-card">
+              Ver Todas
+            </a>
+          </div>
+        </div>
+
+        <!-- Acessar por Serial Key -->
+        <div class="card">
+          <div class="card-icon">🔗</div>
+          <div class="card-content">
+            <h3>Acessar Página</h3>
+            <p>Acesse qualquer página usando sua serial key</p>
+          </div>
+          <div class="card-actions">
+            <a [routerLink]="['/access']" class="btn-card">
+              Acessar
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  <footer class="menu-footer">
+    <p>Virtual NFC Cards © 2025 - Todos os direitos reservados</p>
+    <p class="versao">Versão 1.0.0</p>
+  </footer>
+</div>

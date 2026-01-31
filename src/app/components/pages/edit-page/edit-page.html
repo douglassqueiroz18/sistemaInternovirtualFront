@@ -1,0 +1,496 @@
+<!-- FUNDO SEPARADO (cobre toda a tela) -->
+<div
+  *ngIf="hasBackgroundImage()"
+  class="page-background"
+  [style.background]="getBackgroundStyle()"
+></div>
+
+<!-- CONTEÚDO (SEM fundo próprio) -->
+<div class="container">
+  <div class="content-wrapper" [class.has-background]="hasBackgroundImage()">
+    <h1 class="title">Configurações do Cartão</h1>
+
+    <div class="serial-badge" *ngIf="serialKey">
+      <span>Cartão:</span> <strong>{{ serialKey }}</strong>
+    </div>
+
+    <!-- Status da imagem temporária -->
+    <div *ngIf="tempFile && pageData" class="temp-alert">
+      <mat-icon style="color: #ff9800; vertical-align: middle">info</mat-icon>
+      <span
+        >Imagem carregada localmente. Clique em "Salvar Alterações" para enviar ao servidor.</span
+      >
+      <button mat-button color="warn" (click)="removeTempLogo()" style="margin-left: 10px">
+        <mat-icon>close</mat-icon>
+        Remover
+      </button>
+    </div>
+
+    <div class="logo-upload-container" *ngIf="pageData">
+  <div class="logo-preview-wrapper" title="Clique para {{ pageData.logo ? 'alterar' : 'adicionar' }} a foto">
+    <div class="logo-circle-container">
+      <div class="logo-circle" [style.backgroundImage]="getLogoStyle()" (click)="fileInput.click()">
+        <!-- Placeholder quando não tem logo -->
+        <div *ngIf="!pageData.logo" class="no-logo-placeholder">
+          <mat-icon class="user-placeholder-icon">add_a_photo</mat-icon>
+          <span class="add-text">Adicionar foto</span>
+        </div>
+
+        <!-- Badge indicando que é imagem temporária -->
+        <div *ngIf="tempFile" class="temp-badge">
+          <mat-icon style="font-size: 20px">access_time</mat-icon>
+        </div>
+
+        <!-- Overlay de edição (só aparece quando tem logo) -->
+        <div class="logo-overlay" *ngIf="pageData.logo">
+          <mat-icon>photo_camera</mat-icon>
+          <span>Alterar</span>
+        </div>
+      </div>
+
+      <!-- Botão de remoção (só aparece quando tem logo) -->
+      <button
+        *ngIf="pageData.logo"
+        mat-icon-button
+        color="warn"
+        class="remove-photo-btn"
+        (click)="removeTempLogo($event)"
+        title="Remover foto"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <!-- Botão de editar (só aparece quando tem logo) -->
+      <button
+        *ngIf="pageData.logo"
+        mat-icon-button
+        color="primary"
+        class="edit-photo-btn"
+        (click)="fileInput.click(); $event.stopPropagation()"
+        title="Editar foto"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <input
+      #fileInput
+      type="file"
+      (change)="onFileSelected($event)"
+      accept="image/*"
+      style="display: none"
+    />
+  </div>
+
+  <div class="background-section">
+    <h4>Imagem de Fundo</h4>
+
+    <!-- Aviso de visualização -->
+    <div class="background-preview-notice" *ngIf="hasBackgroundImage()">
+      <mat-icon>visibility</mat-icon>
+      <span>A imagem de fundo está sendo visualizada ao fundo desta página</span>
+    </div>
+
+    <!-- Upload de nova imagem de background -->
+    <div class="background-upload">
+      <input
+        type="file"
+        #backgroundInput
+        accept="image/*"
+        (change)="onBackgroundSelected($event)"
+        style="display: none"
+      />
+
+      <button mat-stroked-button color="primary" (click)="backgroundInput.click()">
+        <mat-icon>wallpaper</mat-icon>
+        {{ hasBackgroundImage() ? 'Alterar Imagem de Fundo' : 'Adicionar Imagem de Fundo' }}
+      </button>
+
+      <!-- Status da imagem temporária de background -->
+      <div *ngIf="tempBackgroundFile" class="temp-background-alert">
+        <mat-icon style="color: #ff9800; vertical-align: middle; font-size: 16px">
+          info
+        </mat-icon>
+        <span style="font-size: 12px">
+          Imagem de fundo carregada localmente. Salve para enviar ao servidor.
+        </span>
+      </div>
+
+      <p class="background-hint">
+        <small>Ou use uma cor sólida abaixo:</small>
+      </p>
+    </div>
+  </div>
+
+  <!-- Mensagem contextual baseada no estado -->
+  <p class="upload-label" *ngIf="!pageData.logo">
+    Clique no círculo acima para adicionar uma foto de perfil
+  </p>
+  <p class="upload-label" *ngIf="pageData.logo">
+    Clique na foto para alterar
+  </p>
+
+  <p class="upload-hint" *ngIf="tempFile">
+    <small>A imagem será enviada ao servidor apenas quando você salvar as alterações.</small>
+  </p>
+</div>
+
+    <hr class="divider" />
+
+    <div *ngIf="loading && !pageData" class="state-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Sincronizando dados com o servidor...</p>
+    </div>
+
+    <div *ngIf="!loading && !pageData" class="state-container error-state">
+      <mat-icon color="warn">error</mat-icon>
+      <p>Não encontramos os dados para este serial.</p>
+      <button mat-button color="primary" (click)="loadPage()">Tentar Novamente</button>
+    </div>
+
+    <div *ngIf="pageData" class="form-container">
+      <form (submit)="savePageData()" #editForm="ngForm">
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nome do Cartão / Nome Exibido</mat-label>
+            <input
+              matInput
+              [(ngModel)]="pageData.nomeCartao"
+              name="nomeCartao"
+              required
+              placeholder="Ex: João Silva"
+            />
+          </mat-form-field>
+
+          <div class="social-section">
+            <h3>Links de Contato</h3>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Instagram (URL)</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.instagram"
+                name="instagram"
+                placeholder="https://instagram.com/..."
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>WhatsApp (Número com DDD)</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.whatsapp"
+                name="whatsapp"
+                placeholder="Ex: 11999999999"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Facebook (URL)</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.facebook"
+                name="facebook"
+                placeholder="https://facebook.com/..."
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>LinkedIn (URL)</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.linkedin"
+                name="linkedin"
+                placeholder="https://linkedin.com/in/..."
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>TikTok (URL)</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.tiktok"
+                name="tiktok"
+                placeholder="https://tiktok.com/@..."
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>YouTube (URL)</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.youtube"
+                name="youtube"
+                placeholder="https://youtube.com/c/..."
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Site (URL)</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.site"
+                name="site"
+                placeholder="https://seusite.com"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.email"
+                name="email"
+                placeholder="email@dominio.com"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="custom-section">
+            <h3>Personalização</h3>
+
+            <!-- Cor de fundo -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Cor de Fundo</mat-label>
+              <div class="color-input-wrapper">
+                <input
+                  matInput
+                  [(ngModel)]="pageData.background"
+                  name="background"
+                  placeholder="#FFFFFF ou URL da imagem"
+                />
+
+                <!-- Seletor de cores embutido -->
+                <div class="color-picker-container">
+                  <input
+                    type="color"
+                    [value]="getColorFromBackground()"
+                    (input)="onColorPickerChange($event)"
+                    class="color-picker"
+                    title="Selecionar cor"
+                  />
+                </div>
+
+                <!-- Mostra preview da cor se for hexadecimal -->
+                <div
+                  *ngIf="pageData.background && pageData.background.startsWith('#')"
+                  class="color-preview"
+                  [style.background]="pageData.background"
+                ></div>
+              </div>
+
+              <!-- Gradientes pré-definidos -->
+              <div class="gradient-section">
+                <div class="gradient-label">
+                  <small>Gradientes pré-definidos:</small>
+                </div>
+
+                <div class="gradient-presets">
+                  <button
+                    *ngFor="let gradient of gradientPresets"
+                    type="button"
+                    class="gradient-chip"
+                    [style.background]="gradient.value"
+                    [attr.title]="gradient.name"
+                    (click)="selectGradient(gradient.value)"
+                  >
+                    <span class="gradient-name">{{ gradient.name }}</span>
+                  </button>
+                </div>
+
+                <!-- Criar gradiente customizado -->
+                <!-- Criar gradiente customizado -->
+                <div class="custom-gradient" *ngIf="showCustomGradient">
+                  <div class="gradient-controls">
+                    <div class="gradient-color-inputs">
+                      <div class="color-input-row">
+                        <label>Cor 1:</label>
+                        <input
+                          type="color"
+                          [(ngModel)]="customColor1"
+                          [ngModelOptions]="{ standalone: true }"
+                          (input)="updateCustomGradient()"
+                        />
+                        <input
+                          type="text"
+                          [(ngModel)]="customColor1"
+                          [ngModelOptions]="{ standalone: true }"
+                          (input)="updateCustomGradient()"
+                          placeholder="#FF0000"
+                        />
+                      </div>
+                      <div class="color-input-row">
+                        <label>Cor 2:</label>
+                        <input
+                          type="color"
+                          [(ngModel)]="customColor2"
+                          [ngModelOptions]="{ standalone: true }"
+                          (input)="updateCustomGradient()"
+                        />
+                        <input
+                          type="text"
+                          [(ngModel)]="customColor2"
+                          [ngModelOptions]="{ standalone: true }"
+                          (input)="updateCustomGradient()"
+                          placeholder="#0000FF"
+                        />
+                      </div>
+                      <div class="color-input-row">
+                        <label>Ângulo:</label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="360"
+                          [(ngModel)]="gradientAngle"
+                          [ngModelOptions]="{ standalone: true }"
+                          (input)="updateCustomGradient()"
+                        />
+                        <span>{{ gradientAngle }}°</span>
+                      </div>
+                    </div>
+
+                    <div
+                      class="gradient-preview-large"
+                      [style.background]="customGradientValue"
+                    ></div>
+
+                    <div class="gradient-actions">
+                      <button
+                        mat-button
+                        color="primary"
+                        type="button"
+                        (click)="applyCustomGradient()"
+                      >
+                        <mat-icon>check</mat-icon> Aplicar
+                      </button>
+                      <button mat-button type="button" (click)="showCustomGradient = false">
+                        <mat-icon>close</mat-icon> Cancelar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  mat-button
+                  color="accent"
+                  type="button"
+                  (click)="showCustomGradient = !showCustomGradient"
+                  class="custom-gradient-btn"
+                >
+                  <mat-icon>gradient</mat-icon>
+                  {{ showCustomGradient ? 'Fechar editor' : 'Criar gradiente customizado' }}
+                </button>
+              </div>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Template da Página</mat-label>
+              <mat-select [(ngModel)]="pageData.typePage" name="typePage">
+                <mat-option [value]="1">
+                  <div class="template-option">
+                    <small class="template-subtitle">Músico / DJ - </small>
+                    <span *ngIf="pageData.typePage === 1" class="current-badge">Atual</span>
+                  </div>
+                </mat-option>
+                <mat-option [value]="2">
+                  <div class="template-option">
+                    <small class="template-subtitle">Fotógrafo</small>
+                    <span *ngIf="pageData.typePage === 2" class="current-badge">Atual</span>
+                  </div>
+                </mat-option>
+                <mat-option [value]="3">
+                  <div class="template-option">
+                    <small class="template-subtitle">(Template 3)</small>
+                    <span *ngIf="pageData.typePage === 3" class="current-badge">Atual</span>
+                  </div>
+                </mat-option>
+              </mat-select>
+
+              <!-- Mostrar qual template está selecionado fora do select -->
+              <mat-hint *ngIf="pageData.typePage">
+                Template atual:
+                <strong>
+                  {{
+                    pageData.typePage === 1
+                      ? 'Moderno'
+                      : pageData.typePage === 2
+                        ? 'Clássico'
+                        : 'Minimalista'
+                  }}
+                </strong>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- SEÇÃO DE AÇÕES -->
+        <div class="actions-section">
+          <!-- Botões de limpeza -->
+          <div class="cleanup-buttons">
+            <div class="button-group">
+              <div class="button-row">
+                <button
+                  mat-button
+                  color="warn"
+                  type="button"
+                  (click)="removeTempLogo()"
+                  *ngIf="tempFile"
+                  class="cleanup-btn"
+                >
+                  <mat-icon>delete</mat-icon>
+                  Remover Logo
+                </button>
+
+                <button
+                  mat-button
+                  color="warn"
+                  type="button"
+                  (click)="removeBackgroundImage()"
+                  *ngIf="hasBackgroundImage()"
+                  class="cleanup-btn"
+                >
+                  <mat-icon>delete</mat-icon>
+                  Remover Imagem de Fundo
+                </button>
+
+                <button
+                  mat-button
+                  color="warn"
+                  type="button"
+                  (click)="removeBackground()"
+                  class="cleanup-btn"
+                >
+                  <mat-icon>delete</mat-icon>
+                  Remover Cor/Gradiente
+                </button>
+              </div>
+              <p class="cleanup-hint" *ngIf="tempFile || tempBackgroundFile">
+                <small>Estes itens serão perdidos se não forem salvos</small>
+              </p>
+            </div>
+          </div>
+
+          <!-- Botão principal de salvar -->
+          <div class="save-section">
+            <div class="save-info" *ngIf="tempFile || tempBackgroundFile">
+              <mat-icon style="color: #ff9800; vertical-align: middle">info</mat-icon>
+              <span>Você tem alterações locais não salvas</span>
+            </div>
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="loading || !editForm.valid"
+              class="save-btn"
+            >
+              <mat-icon>save</mat-icon>
+              <span *ngIf="!loading">Salvar Todas as Alterações</span>
+              <span *ngIf="loading">Salvando...</span>
+              <mat-spinner *ngIf="loading" diameter="20" style="margin-left: 8px"></mat-spinner>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="access-container">
+
+  <h2>Acessar Página</h2>
+
+  <p class="description">
+    Digite o código serial do seu cartão para visualizar sua página.
+  </p>
+
+  <div class="form-box">
+    <input
+      type="text"
+      placeholder="Digite seu serial-key"
+      [(ngModel)]="serialKey"
+      maxlength="12"
+    />
+
+    <button (click)="buscarPagina()" [disabled]="loading()">
+      {{ loading() ? "Buscando..." : "Acessar" }}
+    </button>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+  </div>
+
+</div>

@@ -1,0 +1,73 @@
+<div class="container">
+  <h2>Gerar Páginas em Branco</h2>
+  
+  <div class="info-box">
+    <p>📝 As páginas serão criadas vazias. Os clientes poderão editá-las depois.</p>
+  </div>
+  
+  <div class="input-group">
+    <label for="quantidade">Número de páginas:</label>
+    <input 
+      type="number" 
+      id="quantidade"
+      [(ngModel)]="quantidade" 
+      min="1" 
+      max="1000"
+      [disabled]="isLoading"
+      placeholder="Ex: 100"
+    />
+    <button 
+      (click)="iniciarCriacao()"
+      [disabled]="isLoading || quantidade <= 0"
+    >
+      {{ isLoading ? 'Gerando...' : 'Gerar Páginas' }}
+    </button>
+  </div>
+
+  <div *ngIf="mensagem" class="mensagem" [class.erro]="mensagem.includes('❌')">
+    {{ mensagem }}
+  </div>
+
+  <div *ngIf="mostrarConfirmacao" class="confirmacao">
+    <h3>⚠️ Confirmação</h3>
+    <p>Você está prestes a criar <strong>{{quantidade}}</strong> página{{quantidade > 1 ? 's' : ''}} em branco.</p>
+    <p class="aviso">As páginas serão criadas sem dados para que os clientes possam preenchê-las depois.</p>
+    
+    <div class="botoes">
+      <button (click)="confirmarCriacao()" class="btn-confirmar">
+        👍 Sim, Gerar {{quantidade}} Página{{quantidade > 1 ? 's' : ''}}
+      </button>
+      <button (click)="cancelarCriacao()" class="btn-cancelar">Cancelar</button>
+    </div>
+  </div>
+
+  <div *ngIf="resultado" class="resultado">
+    <h3>✅ Páginas Criadas com Sucesso</h3>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-label">Solicitadas:</span>
+        <span class="stat-value">{{resultado.totalSolicitadas}}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Criadas:</span>
+        <span class="stat-value success">{{resultado.criadasComSucesso}}</span>
+      </div>
+      <div class="stat-item" *ngIf="resultado.falhas > 0">
+        <span class="stat-label">Falhas:</span>
+        <span class="stat-value erro">{{resultado.falhas}}</span>
+      </div>
+    </div>
+    
+    <div *ngIf="resultado.serialKeys" class="serial-keys">
+      <h4>Serial Keys Geradas:</h4>
+      <div class="keys-list">
+        <div *ngFor="let key of resultado.serialKeys" class="key-item">
+          {{key}}
+        </div>
+      </div>
+    </div>
+    
+    <button (click)="limparResultado()" class="btn-limpar">Limpar</button>
+  </div>
+</div>

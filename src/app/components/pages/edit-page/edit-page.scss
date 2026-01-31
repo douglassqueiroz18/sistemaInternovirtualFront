@@ -1,0 +1,493 @@
+.body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Fundo que cobre toda a tela - SEPARADO do conteúdo */
+/* CORREÇÃO DEFINITIVA */
+.page-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1; /* Fica ATRÁS de tudo */
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+/* Container do conteúdo - NÃO TEM FUNDO */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  position: relative;
+  /* Não precisa de z-index aqui */
+}
+.content-wrapper.has-background {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
+}
+.background-preview-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e3f2fd;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  color: #1976d2;
+  font-size: 14px;
+}
+.background-preview-notice mat-icon {
+  color: #1976d2;
+}
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.content-wrapper {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+/* Serial Badge */
+.serial-badge {
+  background: #e3f2fd;
+  padding: 8px 20px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Logo Section */
+.logo-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.logo-upload-container {
+  text-align: center;
+}
+
+.logo-preview-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin: 16px 0;
+}
+
+.logo-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: #f5f5f5; /* Cor de fundo quando não tem logo */
+  border: 2px dashed #ccc; /* Borda tracejada quando não tem logo */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+
+  /* Quando tem logo, muda a aparência */
+  &[style*="background-image"] {
+    border: 3px solid #1976d2; /* Borda sólida quando tem logo */
+    border-style: solid;
+  }
+}
+.no-logo-placeholder {
+  text-align: center;
+  color: #666;
+
+  .user-placeholder-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #999;
+  }
+
+  .add-text {
+    display: block;
+    font-size: 12px;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+}
+.placeholder-icon {
+  font-size: 140px;
+  color: #bdbdbd;
+}
+
+.temp-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #ff9800;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  z-index: 10;
+}
+.remove-photo-btn {
+  right: -8px;
+  color: #f44336;
+}
+
+.edit-photo-btn {
+  left: -8px;
+  color: #1976d2;
+}
+.logo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s;
+.logo-circle:hover & {
+    opacity: 1;
+  }
+
+  mat-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  span {
+    font-size: 12px;
+  }
+}
+
+.logo-preview-wrapper:hover .logo-overlay {
+  opacity: 1;
+}
+
+.upload-hint {
+  color: #666;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* Form Card */
+.form-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Expansion Panels */
+.social-panel, .custom-panel {
+  margin: 16px 0;
+  width: 100%;
+}
+
+.expansion-content {
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Background Section */
+.background-section {
+  width: 100%;
+}
+
+.background-preview {
+  margin-bottom: 16px;
+}
+
+.preview-image {
+  width: 100%;
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 2px solid #e0e0e0;
+}
+
+.background-upload {
+  margin-bottom: 16px;
+}
+
+.color-input-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.color-preview {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: 2px solid #ddd;
+  flex-shrink: 0;
+}
+
+/* Alerts */
+.temp-alert, .temp-background-alert {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff3e0;
+  border: 1px solid #ffb74d;
+  color: #e65100;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 16px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 16px !important;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 24px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 16px;
+  }
+
+  .logo-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .form-card {
+    box-shadow: none !important;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .temp-alert, .temp-background-alert {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}
+
+/* States */
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  text-align: center;
+}
+
+.error-state {
+  color: #d32f2f;
+}
+/* Fundo que cobre toda a tela */
+/* Gradientes pré-definidos */
+.gradient-section {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.gradient-label {
+  color: #666;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.gradient-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.gradient-chip {
+  height: 60px;
+  border-radius: 6px;
+  border: 2px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.gradient-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-color: #3f51b5;
+}
+
+.gradient-name {
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+/* Editor de gradiente customizado */
+.custom-gradient {
+  margin-top: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  border: 2px dashed #ddd;
+}
+
+.gradient-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.gradient-color-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.color-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-input-row label {
+  width: 60px;
+  font-size: 12px;
+  color: #666;
+}
+
+.color-input-row input[type="color"] {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.color-input-row input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: monospace;
+}
+
+.color-input-row input[type="range"] {
+  flex: 1;
+  height: 6px;
+}
+
+.color-input-row span {
+  width: 40px;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.gradient-preview-large {
+  height: 80px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  margin: 10px 0;
+}
+
+.gradient-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.custom-gradient-btn {
+  margin-top: 10px;
+  width: 100%;
+  border: 1px dashed #3f51b5;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 600px) {
+  .gradient-presets {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .gradient-chip {
+    height: 50px;
+  }
+
+  .color-input-row {
+    flex-wrap: wrap;
+  }
+  .logo-circle-container {
+  position: relative;
+  display: inline-block;
+  }
+}
+/* Responsividade */
+@media (max-width: 768px) {
+  .logo-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .no-logo-placeholder .user-placeholder-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+  }
+}

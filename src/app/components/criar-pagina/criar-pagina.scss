@@ -1,0 +1,151 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+input, button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.confirmacao {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.confirmacao p {
+  margin-bottom: 10px;
+}
+
+.confirmacao button {
+  margin: 0 5px;
+}
+
+@media (min-width: 600px) {
+  .container {
+    flex-direction: row;
+  }
+}
+.info-box {
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+  
+  p {
+    margin: 0;
+    color: #0d47a1;
+  }
+}
+
+.aviso {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+
+.resultado {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  
+  h3 {
+    color: #2e7d32;
+    margin-bottom: 1rem;
+  }
+}
+
+.stats {
+  display: flex;
+  gap: 2rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    
+    &.success {
+      color: #2e7d32;
+    }
+    
+    &.erro {
+      color: #d32f2f;
+    }
+  }
+}
+
+.serial-keys {
+  margin-top: 1.5rem;
+  
+  h4 {
+    margin-bottom: 1rem;
+    color: #555;
+  }
+}
+
+.keys-list {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  
+  .key-item {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    font-family: monospace;
+    font-size: 0.9rem;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.btn-limpar {
+  background: #6c757d;
+  margin-top: 1rem;
+  
+  &:hover {
+    background: #545b62;
+  }
+}

@@ -1,0 +1,13 @@
+<div class="card" [style]="getCardStyle()">
+  <img *ngIf="data.logo" class="profile-img" [src]="data.logo" alt="Perfil" />
+  <h1>{{ data.nomeCartao }}</h1>
+  <div class="buttons">
+    <button *ngIf="data.instagram" (click)="openLink('https://instagram.com/' + data.instagram)">Instagram</button>
+    <button *ngIf="data.whatsapp" (click)="openLink('https://wa.me/' + data.whatsapp)">WhatsApp</button>
+    <button *ngIf="data.facebook" (click)="openLink('https://facebook.com/' + data.facebook)">Facebook</button>
+    <button *ngIf="data.linkedin" (click)="openLink('https://linkedin.com/in/' + data.linkedin)">LinkedIn</button>
+    <button *ngIf="data.tiktok" (click)="openLink('https://tiktok.com/@' + data.tiktok)">TikTok</button>
+    <button *ngIf="data.youtube" (click)="openLink('https://youtube.com/' + data.youtube)">YouTube</button>
+    <button *ngIf="data.site" (click)="openLink(data.site)">Site</button>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<div *ngIf="pageData" [ngSwitch]="selectedTemplate">
+  <app-default-template *ngSwitchDefault [data]="pageData"></app-default-template>
+  <app-music *ngSwitchCase="1" [data]="pageData"></app-music>
+  <app-photographer *ngSwitchCase="2" [data]="pageData"></app-photographer>
+  <app-template3 *ngSwitchCase="3" [data]="pageData"></app-template3>
+</div>
