@@ -16,5 +16,9 @@ export interface PageData {
   typePage: number;
   [key: string]: any;
   email: string | null;
-
+  spotify: string;
+  maps: string;
+  especialidade: string;
+  registroProfissional: string;
+  convenio: string;
 }

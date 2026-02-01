@@ -1,0 +1,461 @@
+// Cores do tema jurídico
+$gold-color: #D4AF37;
+$maroon-color: #800000;
+$navy-blue: #000080;
+$dark-wood: #8B4513;
+$parchment: #F5F5DC;
+$shadow-color: rgba(0, 0, 0, 0.2);
+$highlight-color: #FFD700;
+$seal-color: #C0C0C0;
+$accent-color: #B22222;
+$button-hover: darken($maroon-color, 10%);
+.law-card {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+  font-family: 'Times New Roman', Times, serif;
+
+  &.has-background-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+  }
+}
+
+.legal-elements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  .scale-icon {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    font-size: 40px;
+    opacity: 0.1;
+    transform: rotate(-15deg);
+  }
+
+  .law-book {
+    position: absolute;
+    top: 20%;
+    right: 15%;
+    font-size: 35px;
+    opacity: 0.1;
+  }
+
+  .gavel-icon {
+    position: absolute;
+    bottom: 15%;
+    left: 15%;
+    font-size: 45px;
+    opacity: 0.1;
+    transform: rotate(25deg);
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(139, 69, 19, 0.2) 0%,
+    rgba(0, 0, 128, 0.3) 100%);
+  z-index: 1;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 550px;
+  background: linear-gradient(145deg, #ffffff 0%, $parchment 100%);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba($gold-color, 0.2);
+  text-align: center;
+  border: 2px solid $gold-color;
+
+  @media (max-width: 600px) {
+    padding: 20px;
+    max-width: 90%;
+  }
+}
+
+.card-header {
+  margin-bottom: 25px;
+}
+
+.legal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  background: linear-gradient(90deg, $button-hover 0%, darken($button-hover, 10%) 100%);
+  border-radius: 25px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border: 2px solid $gold-color;
+
+  .badge-icon {
+    font-size: 18px;
+  }
+
+  .badge-text {
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+}
+
+.profile-section {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.profile-image-container {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 25px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid $gold-color;
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    0 0 0 4px rgba($maroon-color, 0.1);
+  position: relative;
+
+  .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .profile-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, $navy-blue 0%, darken($navy-blue, 15%) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $gold-color;
+    font-size: 48px;
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+  }
+}
+
+.gold-ring {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 10px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    $gold-color 20%,
+    $gold-color 80%,
+    transparent 100%);
+  border-radius: 5px;
+}
+
+.name-container {
+  margin-top: 20px;
+}
+
+.card-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: $maroon-color;
+  margin-bottom: 10px;
+  font-family: 'Georgia', serif;
+  letter-spacing: 0.5px;
+
+  @media (max-width: 600px) {
+    font-size: 26px;
+  }
+}
+
+.title-decoration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+
+  .line {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $gold-color, transparent);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: $maroon-color;
+    border-radius: 50%;
+  }
+}
+
+.professional-title {
+  font-size: 18px;
+  color: $navy-blue;
+  font-weight: 600;
+  font-style: italic;
+  margin-top: 5px;
+  padding: 5px 15px;
+  background: rgba($gold-color, 0.1);
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.justice-symbols {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 25px 0;
+
+  .symbol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    .symbol-icon {
+      font-size: 28px;
+    }
+
+    .symbol-text {
+      font-size: 12px;
+      color: $navy-blue;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+.social-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin: 30px 0;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.social-button {
+  width: 100%;
+  padding: 16px !important;
+  border-radius: 12px !important;
+  border: 2px solid transparent !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 5px;
+  transition: all 0.3s ease !important;
+  color: white !important;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border-color: white !important;
+  }
+
+  .button-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  .button-label {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .button-subtitle {
+    font-size: 12px;
+    opacity: 0.9;
+    font-weight: normal;
+  }
+
+  // Cores com tema jurídico
+  &.whatsapp {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+  }
+
+  &.instagram {
+    background: linear-gradient(135deg, #833AB4 0%, #C13584 100%) !important;
+  }
+
+  &.linkedin {
+    background: linear-gradient(135deg, #0077B5 0%, #004471 100%) !important;
+  }
+
+  &.email {
+    background: linear-gradient(135deg, $maroon-color 0%, darken($maroon-color, 15%) 100%) !important;
+  }
+
+  &.site {
+    background: linear-gradient(135deg, $navy-blue 0%, darken($navy-blue, 15%) 100%) !important;
+  }
+
+  &.facebook {
+    background: linear-gradient(135deg, #1877F2 0%, #0D5DB6 100%) !important;
+  }
+}
+
+.card-footer {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 2px solid rgba($gold-color, 0.3);
+}
+
+.seal-container {
+  margin-bottom: 15px;
+}
+
+.legal-seal {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 15px 25px;
+  background: linear-gradient(135deg, $parchment 0%, darken($parchment, 5%) 100%);
+  border: 3px double $maroon-color;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  justify-content: center;
+
+  .seal-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: $maroon-color;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .seal-year {
+    font-size: 18px;
+    font-weight: bold;
+    color: $navy-blue;
+    font-family: 'Times New Roman', serif;
+  }
+}
+
+.footer-motto {
+  color: $navy-blue;
+  font-style: italic;
+  font-size: 14px;
+  margin: 15px 0;
+  padding: 10px;
+  background: rgba($gold-color, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid $gold-color;
+}
+
+.footer-decoration {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+
+  .pillar {
+    font-size: 24px;
+    color: $dark-wood;
+    animation: pillarGlow 3s infinite alternate;
+
+    &:nth-child(2) {
+      animation-delay: 1s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 2s;
+    }
+  }
+}
+
+@keyframes pillarGlow {
+  from {
+    opacity: 0.6;
+    text-shadow: 0 0 5px $gold-color;
+  }
+  to {
+    opacity: 1;
+    text-shadow: 0 0 15px $gold-color;
+  }
+}
+
+// Animações
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-content {
+  animation: fadeInScale 0.8s ease-out;
+}
+
+.social-button {
+  animation: fadeInScale 0.8s ease-out;
+  animation-fill-mode: both;
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+  &:nth-child(4) { animation-delay: 0.4s; }
+  &:nth-child(5) { animation-delay: 0.5s; }
+  &:nth-child(6) { animation-delay: 0.6s; }
+}
+
+// Efeito de papel envelhecido
+.card-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+
+  pointer-events: none;
+  opacity: 0.3;
+  border-radius: 15px;
+  z-index: 1;
+}

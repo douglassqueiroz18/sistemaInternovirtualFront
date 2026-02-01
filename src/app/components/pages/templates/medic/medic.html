@@ -1,0 +1,198 @@
+<div class="medical-card" [ngStyle]="getCardStyle()">
+  <!-- Overlay para legibilidade -->
+  <div class="overlay" *ngIf="isImageUrl(data.background || data.logoBackground || '')"></div>
+
+  <!-- Elementos decorativos médicos sutis -->
+  <div class="medical-elements">
+    <div class="pulse-dot dot-1"></div>
+    <div class="pulse-dot dot-2"></div>
+    <div class="pulse-dot dot-3"></div>
+    <div class="ecg-line"></div>
+    <div class="cross-symbol">✚</div>
+  </div>
+
+  <div class="card-content">
+    <!-- Cabeçalho profissional -->
+    <div class="card-header">
+      <div class="medical-badge">
+        <mat-icon class="badge-icon">medical_services</mat-icon>
+        <span class="badge-text">{{ getProfessionalTitle() }}</span>
+      </div>
+    </div>
+
+    <!-- Seção de Perfil Médico -->
+    <div class="profile-section">
+      <!-- Avatar Médico -->
+      <div class="medical-avatar-container">
+        <div class="avatar-frame">
+          @if (data.logo && isImageUrl(data.logo)) {
+            <img
+              [src]="data.logo"
+              [alt]="data.nomeCartao || 'Profissional de Saúde'"
+              class="doctor-avatar"
+              loading="lazy"
+            />
+          } @else if (data.logo) {
+            <img
+              [src]="data.logo"
+              [alt]="data.nomeCartao || 'Profissional de Saúde'"
+              class="doctor-avatar"
+            />
+          } @else {
+            <div class="avatar-placeholder">
+              <mat-icon class="placeholder-icon">medical_services</mat-icon>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Informações do Médico -->
+      <div class="doctor-info">
+        <h1 class="doctor-name">{{ data.nomeCartao || 'Profissional de Saúde' }}</h1>
+
+        <!-- Divisor elegante -->
+        <div class="title-divider">
+          <div class="divider-line"></div>
+          <mat-icon class="divider-icon">local_hospital</mat-icon>
+          <div class="divider-line"></div>
+        </div>
+
+        <!-- Especialidade (com fallback inteligente) -->
+        <div class="specialty-container">
+          <h2 class="doctor-specialty">
+            {{ data.especialidade || 'Especialista em Saúde' }}
+          </h2>
+        </div>
+
+
+
+        <!-- Informações adicionais em linha -->
+        <div class="additional-info-line">
+          <span class="info-item" *ngIf="data.registroProfissional;">
+            <mat-icon>verified_user</mat-icon>
+            Registro: {{ data.registroProfissional }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grade de Contatos Médicos -->
+    <div class="medical-contacts-grid">
+      <!-- WhatsApp (Sempre visível com call-to-action) -->
+      <button class="medical-contact-button emergency"
+              mat-raised-button
+              (click)="openLink('https://wa.me/' + (data.whatsapp || '5511999999999').replace(/\D/g, ''))"
+              matTooltip="Entre em contato para marcar uma consulta">
+        <div class="button-content">
+          <div class="button-header">
+            <mat-icon class="button-icon">emergency</mat-icon>
+            <span class="button-title">Atendimento WhatsApp</span>
+          </div>
+          <span class="button-subtitle">Clique para conversar</span>
+        </div>
+      </button>
+
+      <!-- E-mail -->
+      <button class="medical-contact-button email"
+              mat-raised-button
+              (click)="copyEmail()"
+              [matTooltip]="emailCopied ? 'E-mail copiado!' : 'Clique para copiar'"
+              [class.copied]="emailCopied">
+        <div class="button-content">
+          <div class="button-header">
+            <mat-icon class="button-icon">
+              {{ emailCopied ? 'check_circle' : 'content_copy' }}
+            </mat-icon>
+            <span class="button-title">
+              {{ emailCopied ? 'Copiado!' : 'Copiar E-mail' }}
+            </span>
+          </div>
+          <span class="button-subtitle">{{ data.email }}</span>
+        </div>
+      </button>
+
+      <!-- Site -->
+      <button *ngIf="data.site"
+              class="medical-contact-button site"
+              mat-raised-button
+              (click)="openLink(data.site)"
+              matTooltip="Visite nosso site">
+        <div class="button-content">
+          <div class="button-header">
+            <mat-icon class="button-icon">language</mat-icon>
+            <span class="button-title">Site Oficial</span>
+          </div>
+          <span class="button-subtitle">Saiba mais sobre nosso trabalho</span>
+        </div>
+      </button>
+
+      <!-- Outras redes sociais -->
+      <button *ngIf="data.instagram"
+              class="medical-contact-button instagram"
+              mat-raised-button
+              (click)="openLink('https://instagram.com/' + cleanUrl(data.instagram))"
+              matTooltip="Acompanhe dicas de saúde">
+        <div class="button-content">
+          <div class="button-header">
+            <mat-icon class="button-icon">local_florist</mat-icon>
+            <span class="button-title">Instagram</span>
+          </div>
+          <span class="button-subtitle">@{{ cleanUrl(data.instagram) }}</span>
+        </div>
+      </button>
+
+      <button *ngIf="data.facebook"
+              class="medical-contact-button facebook"
+              mat-raised-button
+              (click)="openLink('https://facebook.com/' + cleanUrl(data.facebook))"
+              matTooltip="Participe da nossa comunidade">
+        <div class="button-content">
+          <div class="button-header">
+            <mat-icon class="button-icon">groups</mat-icon>
+            <span class="button-title">Facebook</span>
+          </div>
+          <span class="button-subtitle">Comunidade de Saúde</span>
+        </div>
+      </button>
+
+      <!-- Informações do consultório -->
+      <div class="consultory-info">
+
+        <div class="info-card" *ngIf="data.convenio || data.convenio">
+          <div class="info-card-header">
+            <mat-icon>health_and_safety</mat-icon>
+            <h3>Convênios Aceitos</h3>
+          </div>
+          <p class="info-card-content">
+            {{ data.convenio || data.convenio || 'Diversos convênios' }}
+          </p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <mat-icon>place</mat-icon>
+            <h3>Localização</h3>
+          </div>
+          <p class="info-card-content" *ngIf="data.maps">
+            <a href="{{ data.maps }}" target="_blank" class="location-link">
+              Clique para ver no mapa
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé Profissional -->
+    <div class="medical-footer">
+      <div class="footer-content">
+        <div class="footer-text">
+          <mat-icon class="footer-icon">favorite</mat-icon>
+          <span>Comprometido com a sua saúde e bem-estar</span>
+        </div>
+        <div class="footer-tagline">
+          Excelência no atendimento • Ética profissional • Humanização
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

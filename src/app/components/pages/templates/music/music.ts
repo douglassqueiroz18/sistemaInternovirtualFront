@@ -1,82 +1,159 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { PageData } from '../../../models/page-data.model';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { PageData } from '../../../models/page-data.model';
 
 @Component({
   selector: 'app-music',
   standalone: true,
-  imports: [CommonModule, MatButtonModule,MatIconModule],
+  imports: [
+    CommonModule, 
+    MatButtonModule, 
+    MatIconModule,
+    MatTooltipModule
+  ],
   templateUrl: './music.html',
-  styleUrl: './music.scss',
+  styleUrls: ['./music.scss']
 })
-export class Music {
+export class Music implements OnInit, OnDestroy {
   @Input() data!: PageData;
 
   vinylPlaying = false;
+  spectrumBars: { height: number }[] = [];
+  private spectrumInterval: any;
 
   ngOnInit() {
-    // Inicia animação do vinil após um delay
+    this.initializeSpectrum();
+    this.startVinylAnimation();
+  }
+
+  ngOnDestroy() {
+    if (this.spectrumInterval) {
+      clearInterval(this.spectrumInterval);
+    }
+  }
+
+  // Inicializa o espectro visual
+  private initializeSpectrum() {
+    // Cria 15 barras para o espectro
+    this.spectrumBars = Array.from({ length: 15 }, () => ({
+      height: Math.random() * 40 + 10
+    }));
+
+    // Anima o espectro
+    this.spectrumInterval = setInterval(() => {
+      this.spectrumBars = this.spectrumBars.map(() => ({
+        height: Math.random() * 40 + 10
+      }));
+    }, 200);
+  }
+
+  // Inicia animação do vinil
+  private startVinylAnimation() {
     setTimeout(() => {
       this.vinylPlaying = true;
-    }, 1000);
+    }, 1500);
   }
-  getCardStyle(): string {
-    let style = '';
 
-    // PRIORIDADE 1: logoBackground (imagem)
-    if (this.data.logoBackground && this.data.logoBackground.trim() !== '') {
+  // Alterna estado do vinil
+  toggleVinyl() {
+    this.vinylPlaying = !this.vinylPlaying;
+  }
+
+  // Abre links
+  openLink(url: string): void {
+    let finalUrl = url;
+    
+    if (!url.startsWith('http://') && 
+        !url.startsWith('https://') && 
+        !url.startsWith('mailto:')) {
+      finalUrl = 'https://' + url;
+    }
+    
+    window.open(finalUrl, '_blank');
+  }
+
+  // Estilo do card
+  getCardStyle(): { [key: string]: string } {
+    const style: { [key: string]: string } = {};
+
+    // PRIORIDADE 1: logoBackground
+    if (this.data.logoBackground?.trim()) {
       if (this.isImageUrl(this.data.logoBackground)) {
-        // Se for URL de imagem
-        style += `background-image: url('${this.data.logoBackground}'); background-size: cover; background-position: center; background-repeat: no-repeat;`;
+        style['background-image'] = `url('${this.data.logoBackground}')`;
+        style['background-size'] = 'cover';
+        style['background-position'] = 'center';
+        style['background-repeat'] = 'no-repeat';
       } else if (this.data.logoBackground.startsWith('#')) {
-        // Se for cor hexadecimal
-        style += `background-color: ${this.data.logoBackground};`;
+        style['background-color'] = this.data.logoBackground;
       } else if (this.isGradient(this.data.logoBackground)) {
-        // Se for gradiente
-        style += `background: ${this.data.logoBackground};`;
+        style['background'] = this.data.logoBackground;
       }
     }
-    // PRIORIDADE 2: background (cor/gradiente/imagem geral)
-    else if (this.data.background && this.data.background.trim() !== '') {
+    // PRIORIDADE 2: background
+    else if (this.data.background?.trim()) {
       if (this.isImageUrl(this.data.background)) {
-        // Se for URL de imagem
-        style += `background-image: url('${this.data.background}'); background-size: cover; background-position: center; background-repeat: no-repeat;`;
+        style['background-image'] = `url('${this.data.background}')`;
+        style['background-size'] = 'cover';
+        style['background-position'] = 'center';
+        style['background-repeat'] = 'no-repeat';
       } else if (this.data.background.startsWith('#')) {
-        // Se for cor hexadecimal
-        style += `background-color: ${this.data.background};`;
+        style['background-color'] = this.data.background;
       } else if (this.isGradient(this.data.background)) {
-        // Se for gradiente
-        style += `background: ${this.data.background};`;
+        style['background'] = this.data.background;
       } else {
-        // Fallback padrão
-        style += `background-color: ${this.data.background};`;
+        style['background-color'] = this.data.background;
       }
     }
-    // PRIORIDADE 3: Fallback padrão
+    // PRIORIDADE 3: Fallback padrão (tema musical)
     else {
-      style += `background-color: #ffffff;`;
+      style['background'] = 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)';
     }
-
+    
     return style;
   }
 
-  // Método auxiliar para verificar se é URL de imagem
+  // Métodos auxiliares
   private isImageUrl(value: string): boolean {
+    const imagePattern = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
     return value.startsWith('http') ||
            value.startsWith('data:image') ||
-           value.includes('.jpg') ||
-           value.includes('.jpeg') ||
-           value.includes('.png') ||
-           value.includes('.gif') ||
-           value.includes('.webp');
+           imagePattern.test(value);
   }
 
-  // Método auxiliar para verificar se é gradiente
   private isGradient(value: string): boolean {
-    return value.includes('linear-gradient') ||
-           value.includes('radial-gradient') ||
-           value.includes('conic-gradient');
+    return /(linear|radial|conic)-gradient/i.test(value);
+  }
+
+
+
+  getInitials(name: string | undefined): string {
+    if (!name) return 'MÚSICA';
+    const words = name.split(' ');
+    if (words.length >= 2) {
+      return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  }
+
+  getTypeLabel(typePage: number): string {
+    const types = {
+      1: 'Artista Solo',
+      2: 'Banda',
+      3: 'DJ/Produtor',
+      4: 'Cantor',
+      5: 'Instrumentista'
+    };
+    return types[typePage as keyof typeof types] || 'Músico';
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', {
+      month: 'long',
+      year: 'numeric'
+    });
   }
 }

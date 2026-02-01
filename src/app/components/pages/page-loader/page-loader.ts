@@ -5,14 +5,15 @@ import { HttpClient } from '@angular/common/http';
 import { API_ENDPOINTS } from '../../../endpoints';
 import { DefaultTemplate } from '../templates/default-template/default-template';
 import { Music } from '../templates/music/music';
-import { Template3 } from '../templates/template3/template3';
 import { ActivatedRoute } from '@angular/router';
 import { PageData } from '../../models/page-data.model';
 import { Photographer } from '../templates/photographer/photographer';
+import { Law } from '../templates/law/law';
+import { Medic } from '../templates/medic/medic';
 
 @Component({
   selector: 'app-page-loader',
-  imports: [CommonModule, DefaultTemplate, Music, Photographer, Template3],
+  imports: [CommonModule, DefaultTemplate, Music, Photographer, Law, Medic],
   templateUrl: './page-loader.html',
   styleUrl: './page-loader.scss',
 })

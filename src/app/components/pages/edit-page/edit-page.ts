@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core'; // Adicione OnInit e inject
+import { ChangeDetectorRef, Component, OnInit, inject, Pipe, PipeTransform } from '@angular/core'; // Adicione OnInit e inject
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { DomSanitizer, SafeStyle, SafeResourceUrl  } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router'; // Importe o ActivatedRoute
 import { TempStorageService } from '../../../services/temp-storage-service';
 import { PageData } from '../../models/page-data.model';
@@ -29,7 +29,6 @@ import { timeout } from 'rxjs';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatIconModule,
-
   ],
   templateUrl: './edit-page.html',
   styleUrl: './edit-page.scss',
@@ -46,6 +45,8 @@ export class EditPage implements OnInit {
   logoBackgroundBlobUrl: string | null = null;
   originalBackground: string = '';
   backgroundHasChanged: boolean = false;
+  gettingLocation = false;
+  showMapEmbed = false;
   gradientPresets = [
   { name: 'Sunset', value: 'linear-gradient(135deg, #FF6B6B, #FFE66D)' },
   { name: 'Ocean', value: 'linear-gradient(135deg, #36D1DC, #5B86E5)' },
@@ -435,4 +436,83 @@ toggleCustomGradient(event: Event): void {
   event.stopPropagation(); // Para a propagação do evento
   this.showCustomGradient = !this.showCustomGradient;
 }
+formatSpotifyUrl() {
+  // Optional chaining para segurança total
+  if (!this.pageData?.spotify?.trim()) return;
+
+  const spotifyValue = this.pageData.spotify.trim();
+
+  // Se já começa com http, não faz nada
+  if (spotifyValue.startsWith('http')) return;
+
+  // Se parece com ID do Spotify, converte para URL
+  const spotifyIdMatch = spotifyValue.match(/^([0-9a-zA-Z]{22})/);
+  if (spotifyIdMatch) {
+    this.pageData.spotify = `https://open.spotify.com/artist/${spotifyIdMatch[1]}`;
+    return;
+  }
+
+  // Adiciona https:// se for um domínio
+  this.pageData.spotify = `https://${spotifyValue}`;
+}
+openGoogleMaps(): void {
+  if (this.pageData?.maps) {
+    const query = encodeURIComponent(this.pageData.maps);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+  }
+}
+getCurrentLocation(): void {
+  this.gettingLocation = true;
+
+  if (!navigator.geolocation) {
+    alert('Geolocalização não suportada pelo navegador');
+    this.gettingLocation = false;
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+
+      // Usar Geocoding reverso para obter endereço
+      this.reverseGeocode(latitude, longitude);
+    },
+    (error) => {
+      console.error('Erro na geolocalização:', error);
+      this.gettingLocation = false;
+      alert('Não foi possível obter a localização. Digite o endereço manualmente.');
+    },
+    { timeout: 10000 }
+  );
+}
+async reverseGeocode(lat: number, lng: number): Promise<void> {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
+
+    const data = await response.json();
+
+    if (data.display_name) {
+      this.pageData!.maps = data.display_name;
+      this.cdr.detectChanges();
+    }
+  } catch (error) {
+    console.error('Erro no geocoding:', error);
+    // Fallback: usar coordenadas
+    this.pageData!.maps = `${lat}, ${lng}`;
+  } finally {
+    this.gettingLocation = false;
+  }
+}
+getMapEmbedUrl(): SafeResourceUrl | string {
+  if (!this.pageData?.maps) return '';
+
+  const query = encodeURIComponent(this.pageData.maps);
+  const url = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${query}`;
+
+  return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+}
+// Pipe SafeUrl (crie um pipe se não tiver)
+
 }

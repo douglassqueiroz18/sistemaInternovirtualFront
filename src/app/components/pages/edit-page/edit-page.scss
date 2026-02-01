@@ -491,3 +491,17 @@
     height: 36px;
   }
 }
+.spotify-icon {
+  color: #1DB954; /* Verde do Spotify */
+  margin-right: 8px;
+}
+
+/* Highlight quando válido */
+:host ::ng-deep .mat-form-field.mat-focused .spotify-icon {
+  color: #1DB954;
+}
+
+/* Campo com validação positiva */
+:host ::ng-deep .mat-form-field.spotify-valid .mat-form-field-outline {
+  border-color: #1DB954;
+}

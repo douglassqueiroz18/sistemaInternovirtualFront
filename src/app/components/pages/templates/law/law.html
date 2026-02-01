@@ -1,0 +1,116 @@
+<div class="law-card" [ngStyle]="getCardStyle()">
+
+  <!-- Overlay para legibilidade -->
+  <div class="overlay" *ngIf="isImageUrl(data.background || data.logoBackground || '')"></div>
+
+
+  <div class="card-content">
+
+    <!-- Cabeçalho com símbolos jurídicos -->
+    <div class="card-header">
+      <div class="professional-title">
+        <span class="badge-text">PROFISSIONAL DO DIREITO</span>
+      </div>
+    </div>
+
+    <!-- Logo/Imagem de Perfil -->
+    <div class="profile-section">
+      <div class="profile-image-container">
+        <img *ngIf="data.logo"
+             [src]="data.logo"
+             [alt]="data.nomeCartao || 'Perfil'"
+             class="profile-image">
+        <div *ngIf="!data.logo" class="profile-placeholder">
+          {{ getInitials(data.nomeCartao) }}
+        </div>
+        <!-- Anel de ouro decorativo -->
+        <div class="gold-ring"></div>
+      </div>
+
+      <!-- Nome com design jurídico -->
+      <div class="professional-title">
+        <h1 class="card-title">{{ data.nomeCartao || 'Nome do Cartão' }}</h1>
+        <div class="title-decoration">
+          <div class="line"></div>
+          <div class="dot"></div>
+          <div class="line"></div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <!-- Botões de Redes Sociais com tema jurídico -->
+    <div class="social-buttons-grid">
+
+      <!-- WhatsApp (com ícone de justiça) -->
+      <button *ngIf="data.whatsapp"
+              class="social-button whatsapp"
+              mat-raised-button
+              (click)="openLink('https://wa.me/' + data.whatsapp.replace(/\D/g, ''))"
+              matTooltip="Enviar mensagem no WhatsApp">
+        <span class="button-icon">⚖️</span>
+        <span class="button-label">Consultoria</span>
+        <span class="button-subtitle">WhatsApp</span>
+      </button>
+
+      <!-- Instagram -->
+      <button *ngIf="data.instagram"
+              class="social-button instagram"
+              mat-raised-button
+              (click)="openLink('https://instagram.com/' + data.instagram)"
+              matTooltip="Visitar Instagram">
+        <span class="button-icon">📜</span>
+        <span class="button-label">Publicações</span>
+        <span class="button-subtitle">Instagram</span>
+      </button>
+
+      <!-- LinkedIn -->
+      <button *ngIf="data.linkedin"
+              class="social-button linkedin"
+              mat-raised-button
+              (click)="openLink('https://linkedin.com/in/' + data.linkedin)"
+              matTooltip="Ver LinkedIn">
+        <span class="button-icon">💼</span>
+        <span class="button-label">Carreira</span>
+        <span class="button-subtitle">LinkedIn</span>
+      </button>
+
+      <!-- E-mail -->
+      <button *ngIf="data.email"
+              class="social-button email"
+              mat-raised-button
+              (click)="openLink('mailto:' + data.email)"
+              matTooltip="Enviar E-mail">
+        <span class="button-icon">✉️</span>
+        <span class="button-label">Correspondência</span>
+        <span class="button-subtitle">E-mail</span>
+      </button>
+
+      <!-- Site -->
+      <button *ngIf="data.site"
+              class="social-button site"
+              mat-raised-button
+              (click)="openLink(data.site)"
+              matTooltip="Visitar Site">
+        <span class="button-icon">🏛️</span>
+        <span class="button-label">Escritório</span>
+        <span class="button-subtitle">Site</span>
+      </button>
+
+      <!-- Facebook -->
+      <button *ngIf="data.facebook"
+              class="social-button facebook"
+              mat-raised-button
+              (click)="openLink('https://facebook.com/' + data.facebook)"
+              matTooltip="Visitar Facebook">
+        <span class="button-icon">👥</span>
+        <span class="button-label">Comunidade</span>
+        <span class="button-subtitle">Facebook</span>
+      </button>
+
+    </div>
+
+
+</div>

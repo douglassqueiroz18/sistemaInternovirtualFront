@@ -115,17 +115,9 @@
           Imagem de fundo carregada localmente. Salve para enviar ao servidor.
         </span>
       </div>
-
-      <p class="background-hint">
-        <small>Ou use uma cor sólida abaixo:</small>
-      </p>
     </div>
   </div>
 
-  <!-- Mensagem contextual baseada no estado -->
-  <p class="upload-label" *ngIf="!pageData.logo">
-    Clique no círculo acima para adicionar uma foto de perfil
-  </p>
   <p class="upload-label" *ngIf="pageData.logo">
     Clique na foto para alterar
   </p>
@@ -171,7 +163,7 @@
                 matInput
                 [(ngModel)]="pageData.instagram"
                 name="instagram"
-                placeholder="https://instagram.com/..."
+                placeholder="virtualNfc"
               />
             </mat-form-field>
 
@@ -194,7 +186,35 @@
                 placeholder="https://facebook.com/..."
               />
             </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Spotify</mat-label>
+              <mat-icon matPrefix class="spotify-icon" [style.color]="'#1DB954'">headphones</mat-icon>
 
+              <input
+                matInput
+                [(ngModel)]="pageData.spotify"
+                name="spotify"
+                placeholder="https://open.spotify.com/artist/..."
+                (blur)="formatSpotifyUrl()"
+                #spotifyInput="ngModel"
+              />
+
+              <button
+                mat-icon-button
+                matSuffix
+                *ngIf="pageData.spotify"
+                (click)="pageData.spotify = ''"
+                aria-label="Limpar"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+
+              <mat-hint>Link do seu perfil ou música no Spotify</mat-hint>
+
+              <mat-error *ngIf="spotifyInput.invalid && spotifyInput.touched">
+                Link do Spotify inválido
+              </mat-error>
+            </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>LinkedIn (URL)</mat-label>
               <input
@@ -241,6 +261,33 @@
                 [(ngModel)]="pageData.email"
                 name="email"
                 placeholder="email@dominio.com"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Link do Maps</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.maps"
+                name="maps"
+                placeholder="https://maps.google.com/..."
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Especialidade</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.especialidade"
+                name="especialidade"
+                placeholder="Especialidade médica"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Convenios</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.convenio"
+                name="convenio"
+                placeholder="Convenios médicos aceitos"
               />
             </mat-form-field>
           </div>
@@ -399,8 +446,14 @@
                 </mat-option>
                 <mat-option [value]="3">
                   <div class="template-option">
-                    <small class="template-subtitle">(Template 3)</small>
+                    <small class="template-subtitle">Advogado / Juis / Promotor</small>
                     <span *ngIf="pageData.typePage === 3" class="current-badge">Atual</span>
+                  </div>
+                </mat-option>
+                <mat-option [value]="4">
+                  <div class="template-option">
+                    <small class="template-subtitle">Médico / Enfermeiro</small>
+                    <span *ngIf="pageData.typePage === 4" class="current-badge">Atual</span>
                   </div>
                 </mat-option>
               </mat-select>

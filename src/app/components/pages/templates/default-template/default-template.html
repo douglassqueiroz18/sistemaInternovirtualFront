@@ -1,11 +1,179 @@
-<div class="card" [style]="getCardStyle()">
-  <img *ngIf="data.logo" class="profile-img" [src]="data.logo" alt="Perfil" />
-  <h1>{{ data.nomeCartao }}</h1>
-  <p>Instagram: {{ data.instagram }}</p>
-  <p>WhatsApp: {{ data.whatsapp }}</p>
-  <p>Facebook: {{ data.facebook }}</p>
-  <p>LinkedIn: {{ data.linkedin }}</p>
-  <p>TikTok: {{ data.tiktok }}</p>
-  <p>YouTube: {{ data.youtube }}</p>
-  <p>Site: {{ data.site }}</p>
+<div class="card-container" [style]="getCardStyle()">
+  <div class="card">
+
+    <!-- Header do cartão -->
+    <div class="card-header">
+      <div class="profile-section">
+        <div class="avatar-wrapper">
+          <img *ngIf="data.logo"
+               class="profile-img"
+               [src]="data.logo"
+               [alt]="data.nomeCartao || 'Perfil'" />
+          <div *ngIf="!data.logo" class="default-avatar">
+            {{ getInitials(data.nomeCartao) }}
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <h1 class="profile-name">{{ data.nomeCartao || 'Seu Nome' }}</h1>
+
+          <div *ngIf="data.generoMusical" class="profile-tag">
+            <mat-icon class="tag-icon">music_note</mat-icon>
+            <span>{{ data.generoMusical }}</span>
+          </div>
+
+          <div *ngIf="data.estado" class="profile-tag">
+            <mat-icon class="tag-icon">location_on</mat-icon>
+            <span>{{ data.estado }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bio ou descrição -->
+    <div *ngIf="data.descricao" class="bio-section">
+      <p class="bio-text">{{ data.descricao }}</p>
+    </div>
+
+    <!-- Redes Sociais -->
+    <div class="social-section">
+      <h2 class="section-title">Conecte-se</h2>
+
+      <div class="social-grid">
+
+        <!-- Instagram -->
+        <a *ngIf="data.instagram"
+           href="https://instagram.com/{{ data.instagram }}"
+           target="_blank"
+           class="social-item instagram">
+          <div class="social-icon">
+            <mat-icon>photo_camera</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">Instagram</span>
+            <span class="social-handle">@{{ data.instagram }}</span>
+          </div>
+        </a>
+
+        <!-- WhatsApp -->
+        <a *ngIf="data.whatsapp"
+           href="https://wa.me/{{ formatWhatsApp(data.whatsapp) }}"
+           target="_blank"
+           class="social-item whatsapp">
+          <div class="social-icon">
+            <mat-icon>chat</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">WhatsApp</span>
+            <span class="social-handle">{{ formatPhone(data.whatsapp) }}</span>
+          </div>
+        </a>
+
+        <!-- Facebook -->
+        <a *ngIf="data.facebook"
+           href="https://facebook.com/{{ data.facebook }}"
+           target="_blank"
+           class="social-item facebook">
+          <div class="social-icon">
+            <mat-icon>thumb_up</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">Facebook</span>
+            <span class="social-handle">{{ data.facebook }}</span>
+          </div>
+        </a>
+
+        <!-- LinkedIn -->
+        <a *ngIf="data.linkedin"
+           href="{{ data.linkedin }}"
+           target="_blank"
+           class="social-item linkedin">
+          <div class="social-icon">
+            <mat-icon>work</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">LinkedIn</span>
+            <span class="social-handle">Perfil</span>
+          </div>
+        </a>
+
+        <!-- TikTok -->
+        <a *ngIf="data.tiktok"
+           href="https://tiktok.com/@{{ data.tiktok }}"
+           target="_blank"
+           class="social-item tiktok">
+          <div class="social-icon">
+            <mat-icon>music_video</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">TikTok</span>
+            <span class="social-handle">@{{ data.tiktok }}</span>
+          </div>
+        </a>
+
+        <!-- YouTube -->
+        <a *ngIf="data.youtube"
+           href="https://youtube.com/{{ data.youtube }}"
+           target="_blank"
+           class="social-item youtube">
+          <div class="social-icon">
+            <mat-icon>play_circle</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">YouTube</span>
+            <span class="social-handle">Canal</span>
+          </div>
+        </a>
+
+        <!-- Site -->
+        <a *ngIf="data.site"
+           href="{{ data.site }}"
+           target="_blank"
+           class="social-item website">
+          <div class="social-icon">
+            <mat-icon>language</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">Site</span>
+            <span class="social-handle">Visitar</span>
+          </div>
+        </a>
+
+        <!-- E-mail -->
+        <a *ngIf="data.email"
+           href="mailto:{{ data.email }}"
+           class="social-item email">
+          <div class="social-icon">
+            <mat-icon>email</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">E-mail</span>
+            <span class="social-handle">{{ data.email }}</span>
+          </div>
+        </a>
+        <a *ngIf="data.maps"
+           href="{{ data.maps }}"
+           target="_blank"
+           class="social-item maps">
+          <div class="social-icon">
+            <mat-icon>map</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">Maps</span>
+            <span class="social-handle">{{ data.maps }}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer">
+      <p class="footer-text">Conecte-se comigo nas redes sociais</p>
+      <div class="footer-links">
+        <span *ngIf="data.instagram" class="footer-link">@{{ data.instagram }}</span>
+        <span *ngIf="data.whatsapp" class="footer-link">{{ formatPhone(data.whatsapp) }}</span>
+      </div>
+    </div>
+
+  </div>
 </div>

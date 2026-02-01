@@ -1,100 +1,210 @@
-<div class="card" [style]="getCardStyle()">
-  <!-- Elementos visuais musicais -->
-  <div class="music-visualizer">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
+<div class="music-card" [ngStyle]="getCardStyle()">
+  
+  <!-- Background musical -->
+  <div class="music-background">
+    <div class="audio-wave"></div>
+    <div class="audio-wave"></div>
+    <div class="audio-wave"></div>
   </div>
 
   <!-- Notas musicais flutuantes -->
-  <div class="music-notes">
+  <div class="floating-notes">
     <div class="note">♪</div>
     <div class="note">♫</div>
     <div class="note">♩</div>
-    <div class="note">♪</div>
+    <div class="note">🎵</div>
+    <div class="note">🎶</div>
   </div>
 
-  <div class="header">
-    <!-- Vinil animado como foto de perfil -->
-    <div class="vinyl-container">
-      <div class="vinyl" [class.playing]="vinylPlaying">
-        <div class="vinyl-center">
-          <img *ngIf="data.logo" class="profile-img" [src]="data.logo" alt="Perfil" />
-          <div *ngIf="!data.logo" class="vinyl-placeholder">
-            <mat-icon>music_note</mat-icon>
+  <!-- Controles -->
+  <div class="music-controls">
+    <button class="control-btn" (click)="toggleVinyl()">
+      <mat-icon>{{ vinylPlaying ? 'pause_circle' : 'play_circle' }}</mat-icon>
+    </button>
+    <div class="volume-slider">
+      <div class="slider-track"></div>
+      <div class="slider-thumb"></div>
+    </div>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div class="card-content-wrapper">
+    <div class="card-content">
+      
+      <!-- Cabeçalho com vinil -->
+      <div class="card-header">
+        <div class="vinyl-player-section">
+          <div class="turntable">
+            <div class="vinyl" [class.playing]="vinylPlaying">
+              <div class="vinyl-label">
+                <img *ngIf="data.logo" 
+                     [src]="data.logo" 
+                     [alt]="data.nomeCartao || 'Artista'"
+                     class="artist-photo">
+                <div *ngIf="!data.logo" class="artist-initials">
+                  {{ getInitials(data.nomeCartao) }}
+                </div>
+              </div>
+              <div class="vinyl-grooves">
+                <div class="groove"></div>
+                <div class="groove"></div>
+                <div class="groove"></div>
+                <div class="groove"></div>
+              </div>
+            </div>
+            <div class="turntable-arm" [class.playing]="vinylPlaying"></div>
+            <div class="turntable-base"></div>
           </div>
         </div>
-        <div class="vinyl-groove"></div>
-        <div class="vinyl-groove"></div>
-        <div class="vinyl-groove"></div>
+
+        <!-- Informações do artista -->
+        <div class="artist-info">
+          <h1 class="artist-name">{{ data.nomeCartao || 'Nome do Artista' }}</h1>
+
+          <!-- Visualizador de espectro -->
+          <div class="spectrum-visualizer">
+            <div class="bar" *ngFor="let bar of spectrumBars; let i = index" 
+                 [style.height]="bar.height + 'px'"
+                 [style.animation-delay]="i * 0.1 + 's'"></div>
+          </div>
+        </div>
       </div>
-      <div class="turntable-arm"></div>
-    </div>
 
-    <h1 class="artist-name">{{ data.nomeCartao }}</h1>
+      <!-- Redes sociais -->
+      <div class="social-section">
+        <h2 class="section-title">Conecte-se</h2>
+        <p class="section-subtitle">Siga nas redes sociais</p>
+        
+        <div class="social-links-grid">
+          
+          <!-- Spotify -->
+          <button *ngIf="data.spotify"
+                  class="social-link spotify"
+                  mat-raised-button
+                  (click)="openLink(data.spotify!)"
+                  matTooltip="Ouvir no Spotify">
+            <div class="link-icon">
+              <mat-icon>headphones</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">Ouvir</span>
+              <span class="link-subtitle">Spotify</span>
+            </div>
+          </button>
 
-    <!-- Equalizador visual -->
-    <div class="eq-visualizer">
-      <div class="eq-bar"></div>
-      <div class="eq-bar"></div>
-      <div class="eq-bar"></div>
-      <div class="eq-bar"></div>
-      <div class="eq-bar"></div>
+          <!-- Instagram -->
+          <button *ngIf="data.instagram"
+                  class="social-link instagram"
+                  mat-raised-button
+                  (click)="openLink('https://instagram.com/' + data.instagram)"
+                  matTooltip="Seguir no Instagram">
+            <div class="link-icon">
+              <mat-icon>photo_camera</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">Fotos</span>
+              <span class="link-subtitle">Instagram</span>
+            </div>
+          </button>
+
+          <!-- YouTube -->
+          <button *ngIf="data.youtube"
+                  class="social-link youtube"
+                  mat-raised-button
+                  (click)="openLink('https://youtube.com/' + data.youtube)"
+                  matTooltip="Assistir no YouTube">
+            <div class="link-icon">
+              <mat-icon>play_circle</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">Vídeos</span>
+              <span class="link-subtitle">YouTube</span>
+            </div>
+          </button>
+
+          <!-- TikTok -->
+          <button *ngIf="data.tiktok"
+                  class="social-link tiktok"
+                  mat-raised-button
+                  (click)="openLink('https://tiktok.com/@' + data.tiktok)"
+                  matTooltip="Ver no TikTok">
+            <div class="link-icon">
+              <mat-icon>music_video</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">Shorts</span>
+              <span class="link-subtitle">TikTok</span>
+            </div>
+          </button>
+
+          <!-- WhatsApp -->
+          <button *ngIf="data.whatsapp"
+                  class="social-link whatsapp"
+                  mat-raised-button
+                  (click)="openLink('https://wa.me/' + data.whatsapp.replace(/\D/g, ''))"
+                  matTooltip="Conversar no WhatsApp">
+            <div class="link-icon">
+              <mat-icon>chat</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">Contato</span>
+              <span class="link-subtitle">WhatsApp</span>
+            </div>
+          </button>
+
+          <!-- Site -->
+          <button *ngIf="data.site"
+                  class="social-link website"
+                  mat-raised-button
+                  (click)="openLink(data.site)"
+                  matTooltip="Visitar site oficial">
+            <div class="link-icon">
+              <mat-icon>language</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">Site</span>
+              <span class="link-subtitle">Oficial</span>
+            </div>
+          </button>
+
+          <!-- E-mail -->
+          <button *ngIf="data.email"
+                  class="social-link email"
+                  mat-raised-button
+                  (click)="openLink('mailto:' + data.email)"
+                  matTooltip="Enviar e-mail">
+            <div class="link-icon">
+              <mat-icon>email</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">E-mail</span>
+              <span class="link-subtitle">Contato</span>
+            </div>
+          </button>
+
+          <!-- Facebook -->
+          <button *ngIf="data.facebook"
+                  class="social-link facebook"
+                  mat-raised-button
+                  (click)="openLink('https://facebook.com/' + data.facebook)"
+                  matTooltip="Curtir no Facebook">
+            <div class="link-icon">
+              <mat-icon>thumb_up</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">Facebook</span>
+              <span class="link-subtitle">Página</span>
+            </div>
+          </button>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="links">
-    <!-- Botões com ícones musicais -->
-    <a mat-raised-button class="music-btn instagram"
-       href="https://instagram.com/{{ data.instagram }}" target="_blank">
-      <mat-icon>photo_camera</mat-icon>
-      <span>Instagram</span>
-    </a>
-
-    <a mat-raised-button class="music-btn whatsapp"
-       href="https://wa.me/{{ data.whatsapp }}" target="_blank">
-      <mat-icon>chat</mat-icon>
-      <span>WhatsApp</span>
-    </a>
-
-    <a mat-raised-button class="music-btn facebook"
-       href="https://facebook.com/{{ data.facebook }}" target="_blank">
-      <mat-icon>thumb_up</mat-icon>
-      <span>Facebook</span>
-    </a>
-
-    <a mat-raised-button class="music-btn linkedin"
-       href="https://linkedin.com/in/{{ data.linkedin }}" target="_blank">
-      <mat-icon>business</mat-icon>
-      <span>LinkedIn</span>
-    </a>
-
-    <a mat-raised-button class="music-btn tiktok"
-       href="https://tiktok.com/@{{ data.tiktok }}" target="_blank">
-      <mat-icon>music_note</mat-icon>
-      <span>TikTok</span>
-    </a>
-
-    <a mat-raised-button class="music-btn youtube"
-       href="https://youtube.com/{{ data.youtube }}" target="_blank">
-      <mat-icon>play_circle</mat-icon>
-      <span>YouTube</span>
-    </a>
-
-    <a mat-raised-button class="music-btn site"
-       href="{{ data.site }}" target="_blank">
-      <mat-icon>language</mat-icon>
-      <span>Site</span>
-    </a>
-  </div>
-
-  <!-- Onda sonora no rodapé -->
-  <div class="sound-wave">
+  <!-- Footer com onda sonora -->
+  <div class="sound-wave-footer">
     <div class="wave"></div>
     <div class="wave"></div>
     <div class="wave"></div>
