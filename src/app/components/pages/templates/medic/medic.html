@@ -23,7 +23,7 @@
     <!-- Seção de Perfil Médico -->
     <div class="profile-section">
       <!-- Avatar Médico -->
-      <div class="medical-avatar-container">
+      <div class="medical-avatar-container" *ngIf="data.logo && isImageUrl(data.logo)">
         <div class="avatar-frame">
           @if (data.logo && isImageUrl(data.logo)) {
             <img
@@ -79,7 +79,8 @@
     <!-- Grade de Contatos Médicos -->
     <div class="medical-contacts-grid">
       <!-- WhatsApp (Sempre visível com call-to-action) -->
-      <button class="medical-contact-button emergency"
+      <button *ngIf="data.whatsapp"
+              class="medical-contact-button emergency"
               mat-raised-button
               (click)="openLink('https://wa.me/' + (data.whatsapp || '5511999999999').replace(/\D/g, ''))"
               matTooltip="Entre em contato para marcar uma consulta">
@@ -93,7 +94,8 @@
       </button>
 
       <!-- E-mail -->
-      <button class="medical-contact-button email"
+      <button *ngIf="data.email"
+              class="medical-contact-button email"
               mat-raised-button
               (click)="copyEmail()"
               [matTooltip]="emailCopied ? 'E-mail copiado!' : 'Clique para copiar'"
@@ -168,7 +170,7 @@
           </p>
         </div>
 
-        <div class="info-card">
+        <div class="info-card" *ngIf="data.maps">
           <div class="info-card-header">
             <mat-icon>place</mat-icon>
             <h3>Localização</h3>

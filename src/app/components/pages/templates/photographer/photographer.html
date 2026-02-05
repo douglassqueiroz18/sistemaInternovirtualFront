@@ -1,7 +1,7 @@
-<div class="card" [style]="getCardStyle()">
+<div class="card" [style]="getCardStyle()" >
   <!-- Background otimizado com NgOptimizedImage -->
   @if (getBackgroundImageUrl()) {
-    <img 
+    <img
       [ngSrc]="getBackgroundImageUrl()!"
       fill
       [priority]="getBackgroundPriority()"
@@ -10,7 +10,7 @@
       (load)="onBackgroundLoaded()"
       (error)="onBackgroundError()"
     />
-    
+
     <!-- Overlay escuro para melhor contraste -->
     @if (showBackgroundOverlay) {
       <div class="background-overlay"></div>
@@ -21,15 +21,15 @@
   <div class="grid-lines"></div>
   <div class="floating-element circle-1"></div>
   <div class="floating-element circle-2"></div>
-  
+
   <!-- Container principal -->
   <div class="photographer-container">
     <!-- Header -->
     <div class="photographer-header">
       <!-- Frame da lente -->
-      <div class="lens-frame">
+      <div class="lens-frame" *ngIf="data.logo">
         @if (data.logo && isImageUrl(data.logo)) {
-          <img 
+          <img
             [ngSrc]="data.logo"
             width="180"
             height="180"
@@ -39,9 +39,9 @@
             (error)="onProfileImageError()"
           />
         } @else if (data.logo) {
-          <img 
-            class="profile-img" 
-            [src]="data.logo" 
+          <img
+            class="profile-img"
+            [src]="data.logo"
             alt="{{ data.nomeCartao }} - Fotógrafo"
             (error)="onProfileImageError()"
           />
@@ -51,12 +51,12 @@
           </div>
         }
       </div>
-      
+
       <!-- Nome e profissão -->
       <h1 class="profession-tag">{{ data.nomeCartao }}</h1>
       <div class="profession-tag">Fotógrafo Profissional</div>
     </div>
-    
+
     <!-- Grid de contatos -->
     <div class="contact-grid">
       <!-- Instagram -->
@@ -68,14 +68,14 @@
           <div class="contact-title">Instagram</div>
         </div>
         <div class="contact-content">
-          <a href="https://instagram.com/{{ cleanUrl(data.instagram) }}" 
-             target="_blank" 
+          <a href="https://instagram.com/{{ cleanUrl(data.instagram) }}"
+             target="_blank"
              class="contact-link">
             @{{ cleanUrl(data.instagram) }}
           </a>
         </div>
       </div>
-      
+
       <!-- WhatsApp -->
       <div class="profession-tag" *ngIf="data.whatsapp">
         <div class="contact-header">
@@ -85,14 +85,14 @@
           <div class="contact-title">WhatsApp</div>
         </div>
         <div class="contact-content">
-          <a href="https://wa.me/{{ cleanWhatsapp(data.whatsapp) }}" 
-             target="_blank" 
+          <a href="https://wa.me/{{ cleanWhatsapp(data.whatsapp) }}"
+             target="_blank"
              class="contact-link">
             {{ formatPhone(data.whatsapp) }}
           </a>
         </div>
       </div>
-      
+
       <!-- Email -->
       <div class="profession-tag" *ngIf="data.email">
         <div class="contact-header">
@@ -102,13 +102,13 @@
           <div class="contact-title">Email</div>
         </div>
         <div class="contact-content">
-          <a href="mailto:{{ data.email }}" 
+          <a href="mailto:{{ data.email }}"
              class="contact-link">
             {{ data.email }}
           </a>
         </div>
       </div>
-      
+
       <!-- Site -->
       <div class="profession-tag" *ngIf="data.site">
         <div class="contact-header">
@@ -118,15 +118,15 @@
           <div class="contact-title">Portfólio</div>
         </div>
         <div class="contact-content">
-          <a [href]="ensureHttp(data.site)" 
-             target="_blank" 
+          <a [href]="ensureHttp(data.site)"
+             target="_blank"
              class="contact-link">
             {{ cleanUrl(data.site) }}
           </a>
           <div class="contact-text">Veja meus trabalhos</div>
         </div>
       </div>
-      
+
       <!-- YouTube -->
       <div class="profession-tag" *ngIf="data.youtube">
         <div class="contact-header">
@@ -136,15 +136,15 @@
           <div class="contact-title">YouTube</div>
         </div>
         <div class="contact-content">
-          <a href="https://youtube.com/{{ cleanUrl(data.youtube) }}" 
-             target="_blank" 
+          <a href="https://youtube.com/{{ cleanUrl(data.youtube) }}"
+             target="_blank"
              class="contact-link">
             {{ cleanUrl(data.youtube) }}
           </a>
           <div class="contact-text">Tutoriais e bastidores</div>
         </div>
       </div>
-      
+
       <!-- Facebook -->
       <div class="profession-tag" *ngIf="data.facebook">
         <div class="contact-header">
@@ -154,14 +154,14 @@
           <div class="contact-title">Facebook</div>
         </div>
         <div class="contact-content">
-          <a href="https://facebook.com/{{ cleanUrl(data.facebook) }}" 
-             target="_blank" 
+          <a href="https://facebook.com/{{ cleanUrl(data.facebook) }}"
+             target="_blank"
              class="contact-link">
             {{ cleanUrl(data.facebook) }}
           </a>
         </div>
       </div>
-      
+
       <!-- TikTok -->
       <div class="profession-tag" *ngIf="data.tiktok">
         <div class="contact-header">
@@ -171,15 +171,15 @@
           <div class="contact-title">TikTok</div>
         </div>
         <div class="contact-content">
-          <a href="https://tiktok.com/@{{ cleanUrl(data.tiktok) }}" 
-             target="_blank" 
+          <a href="https://tiktok.com/@{{ cleanUrl(data.tiktok) }}"
+             target="_blank"
              class="contact-link">
             @{{ cleanUrl(data.tiktok) }}
           </a>
           <div class="contact-text">Reels e conteúdos rápidos</div>
         </div>
       </div>
-      
+
       <!-- LinkedIn -->
       <div class="profession-tag" *ngIf="data.linkedin">
         <div class="contact-header">
@@ -189,8 +189,8 @@
           <div class="contact-title">LinkedIn</div>
         </div>
         <div class="contact-content">
-          <a href="https://linkedin.com/in/{{ cleanUrl(data.linkedin) }}" 
-             target="_blank" 
+          <a href="https://linkedin.com/in/{{ cleanUrl(data.linkedin) }}"
+             target="_blank"
              class="contact-link">
             {{ cleanUrl(data.linkedin) }}
           </a>
@@ -204,23 +204,16 @@
           <div class="contact-title">Email</div>
         </div>
         <div class="contact-content">
-          <a href="mailto:{{ data.email }}" 
+          <a href="mailto:{{ data.email }}"
              class="contact-link">
             {{ cleanUrl(data.email) }}
           </a>
         </div>
       </div>
     </div>
-    
-    
+
+
     <!-- Footer -->
-    <div class="photographer-footer">
-      <div class="footer-content">
-        <div class="copyright">© {{ currentYear }} • Todos os direitos reservados</div>
-        <div class="signature">
-          Fotografia por <span class="highlight">{{ data.nomeCartao }}</span>
-        </div>
-      </div>
-    </div>
+
   </div>
 </div>

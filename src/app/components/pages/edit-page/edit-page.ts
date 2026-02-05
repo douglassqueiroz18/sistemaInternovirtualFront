@@ -147,41 +147,70 @@ export class EditPage implements OnInit {
   // Adicione 'logo' no PageData se ainda não existir no seu modelo
   // No método loadPage, certifique-se de que pageData.logo receba a URL do banco
   onBackgroundSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (!file) return;
-    if (file) {
-      // Libera blob anterior se existir
-      if (this.logoBackgroundBlobUrl) {
-        URL.revokeObjectURL(this.logoBackgroundBlobUrl);
-      }
-      // Gera novo blob
-      this.logoBackgroundBlobUrl = URL.createObjectURL(file);
-      this.tempBackgroundFile = file;
-    }
-    // Validação
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    const maxSize = 5 * 1024 * 1024;
+  const file: File = event.target.files[0];
+  if (!file) return;
 
-    if (!validTypes.includes(file.type)) {
-      alert('Tipo de arquivo inválido. Use apenas imagens (JPEG, PNG, GIF, WEBP)');
+  // Tipos aceitos
+  const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  const minSize = 150 * 1024;      // 150KB → evita baixa qualidade
+
+  // Mínimos de qualidade
+  const minWidth = 900;          // aceita 1152px, mas permite similares
+  const minHeight = 600;         // aceita 768px, mas permite similares
+  const minRatio = 1.4;          // proporcional a 3:2
+  const maxRatio = 1.6;
+
+  // Tipo
+  if (!validTypes.includes(file.type)) {
+    alert('Formato inválido. Use JPEG, PNG ou WEBP.');
+    return;
+  }
+
+  // Tamanho do arquivo
+  if (file.size > maxSize) {
+    alert('Imagem maior que 5MB.');
+    return;
+  }
+
+  if (file.size < minSize) {
+    alert('Imagem muito comprimida. Qualidade insuficiente.');
+    return;
+  }
+
+  // Validação das dimensões
+  const img = new Image();
+  img.onload = () => {
+    const ratio = img.width / img.height;
+
+    // Resolução mínima
+    if (img.width < minWidth || img.height < minHeight) {
+      alert(`Use pelo menos ${minWidth}×${minHeight}px.`);
       return;
     }
 
-    if (file.size > maxSize) {
-      alert('Arquivo muito grande. Máximo 5MB');
+    // Proporção flexível
+    if (ratio < minRatio || ratio > maxRatio) {
+      alert('Proporção inadequada. Use algo próximo de 3:2.');
       return;
     }
 
+    // Se passou, a imagem é adequada
+
+    // Limpa blob anterior
+    if (this.logoBackgroundBlobUrl) {
+      URL.revokeObjectURL(this.logoBackgroundBlobUrl);
+    }
+
+    this.logoBackgroundBlobUrl = URL.createObjectURL(file);
     this.tempBackgroundFile = file;
 
-    // Cria preview
+    // Preview base64
     const reader = new FileReader();
     reader.onload = (e: any) => {
       if (this.pageData) {
-        // Armazena temporariamente como base64
         this.pageData.logoBackground = e.target.result;
 
-        // Salva no localStorage
         localStorage.setItem(
           `temp_logoBackground_${this.serialKey}`,
           JSON.stringify({
@@ -196,7 +225,12 @@ export class EditPage implements OnInit {
       }
     };
     reader.readAsDataURL(file);
-  }
+  };
+
+  img.src = URL.createObjectURL(file);
+}
+
+
   // No ngOnDestroy (importante para liberar memória)
   ngOnDestroy(): void {
     if (this.logoBackgroundBlobUrl) {
@@ -279,36 +313,39 @@ export class EditPage implements OnInit {
   }
 
   hasBackgroundImage(): boolean {
+
     // Verifica se tem imagem temporária OU logoBackground do banco
     return !!this.tempBackgroundFile ||
           !!(this.pageData?.logoBackground && this.pageData.logoBackground.startsWith('http'));
   }
-  savePage() {
-    if (!this.pageData) return;
-  // Verificar se está tentando enviar ambos
-  const hasBackground = this.pageData.background && this.pageData.background.trim() !== '';
-  const hasLogoBackground = this.pageData.logoBackground && this.pageData.logoBackground.trim() !== '';
-  const hasTempBackground = !!this.tempBackgroundFile;
+
+  public savePageData() {
+  if (!this.pageData) return;
+  let hasBackground = this.pageData.background && this.pageData.background.trim() !== '';
+  let hasLogoBackground = this.pageData.logoBackground && this.pageData.logoBackground.trim() !== '';
+  let hasTempBackground = !!this.tempBackgroundFile;
 
   if ((hasBackground || hasTempBackground) && hasLogoBackground) {
     this.showError('Você só pode ter um fundo por vez: fundo da página OU fundo do logo. Remova um deles.');
+      this.loading = false; // ← adicione esta linha
+
     return;
   }
-  }
-
-  public savePageData() {
     this.loading = true;
     const urlEdit = `http://localhost:8080/pagina/${this.serialKey}`;
     this.http.put(urlEdit, this.pageData).subscribe({
       next: () => {
         alert('Página salva com sucesso!');
         this.loading = false;
-        this.loaded = true;
       },
       error: (error) => {
         alert('Erro ao salvar página.');
         this.loading = false;
       },
+      complete: () => {
+        this.loading = false;
+        console.log('Requisição de salvamento concluída.');
+      }
     });
   }
   // No método que remove o logoBackground temporário

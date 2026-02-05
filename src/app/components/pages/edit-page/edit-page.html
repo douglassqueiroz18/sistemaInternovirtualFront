@@ -105,7 +105,17 @@
         <mat-icon>wallpaper</mat-icon>
         {{ hasBackgroundImage() ? 'Alterar Imagem de Fundo' : 'Adicionar Imagem de Fundo' }}
       </button>
-
+      <button
+      mat-button
+      color="warn"
+      type="button"
+      (click)="removeBackgroundImage()"
+      *ngIf="hasBackgroundImage()"
+      class="cleanup-btn"
+    >
+      <mat-icon>delete</mat-icon>
+      Remover Imagem de Fundo
+    </button>
       <!-- Status da imagem temporária de background -->
       <div *ngIf="tempBackgroundFile" class="temp-background-alert">
         <mat-icon style="color: #ff9800; vertical-align: middle; font-size: 16px">
@@ -493,17 +503,7 @@
                   Remover Logo
                 </button>
 
-                <button
-                  mat-button
-                  color="warn"
-                  type="button"
-                  (click)="removeBackgroundImage()"
-                  *ngIf="hasBackgroundImage()"
-                  class="cleanup-btn"
-                >
-                  <mat-icon>delete</mat-icon>
-                  Remover Imagem de Fundo
-                </button>
+
 
                 <button
                   mat-button
@@ -535,11 +535,9 @@
               type="submit"
               [disabled]="loading || !editForm.valid"
               class="save-btn"
-            >
+            > Salvar
               <mat-icon>save</mat-icon>
-              <span *ngIf="!loading">Salvar Todas as Alterações</span>
-              <span *ngIf="loading">Salvando...</span>
-              <mat-spinner *ngIf="loading" diameter="20" style="margin-left: 8px"></mat-spinner>
+              <mat-spinner diameter="20" style="margin-left: 8px"></mat-spinner>
             </button>
           </div>
         </div>

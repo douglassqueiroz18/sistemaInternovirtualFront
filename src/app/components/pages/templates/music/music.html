@@ -1,5 +1,5 @@
 <div class="music-card" [ngStyle]="getCardStyle()">
-  
+
   <!-- Background musical -->
   <div class="music-background">
     <div class="audio-wave"></div>
@@ -30,15 +30,15 @@
   <!-- Conteúdo principal -->
   <div class="card-content-wrapper">
     <div class="card-content">
-      
+
       <!-- Cabeçalho com vinil -->
       <div class="card-header">
         <div class="vinyl-player-section">
-          <div class="turntable">
-            <div class="vinyl" [class.playing]="vinylPlaying">
+          <div class="turntable" *ngIf="data.logo">
+            <div class="vinyl" [class.playing]="vinylPlaying" *ngIf="data.logo">
               <div class="vinyl-label">
-                <img *ngIf="data.logo" 
-                     [src]="data.logo" 
+                <img *ngIf="data.logo"
+                     [src]="data.logo"
                      [alt]="data.nomeCartao || 'Artista'"
                      class="artist-photo">
                 <div *ngIf="!data.logo" class="artist-initials">
@@ -63,7 +63,7 @@
 
           <!-- Visualizador de espectro -->
           <div class="spectrum-visualizer">
-            <div class="bar" *ngFor="let bar of spectrumBars; let i = index" 
+            <div class="bar" *ngFor="let bar of spectrumBars; let i = index"
                  [style.height]="bar.height + 'px'"
                  [style.animation-delay]="i * 0.1 + 's'"></div>
           </div>
@@ -74,9 +74,9 @@
       <div class="social-section">
         <h2 class="section-title">Conecte-se</h2>
         <p class="section-subtitle">Siga nas redes sociais</p>
-        
+
         <div class="social-links-grid">
-          
+
           <!-- Spotify -->
           <button *ngIf="data.spotify"
                   class="social-link spotify"
