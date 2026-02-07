@@ -105,7 +105,7 @@ export class EditPage implements OnInit {
   this.loading = true;
   this.pageData = null;
 
-  const url = `http://localhost:8080/pagina/${this.serialKey}`;
+  const url = `http://89.167.42.44:8080/pagina/${this.serialKey}`;
 
   // Usar pipe com operadores RxJS para otimizar
   this.http.get<PageData>(url).pipe(
@@ -332,7 +332,7 @@ export class EditPage implements OnInit {
     return;
   }
     this.loading = true;
-    const urlEdit = `http://localhost:8080/pagina/${this.serialKey}`;
+    const urlEdit = `http://89.167.42.44:8080/pagina/${this.serialKey}`;
     this.http.put(urlEdit, this.pageData).subscribe({
       next: () => {
         alert('Página salva com sucesso!');

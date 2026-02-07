@@ -43,7 +43,7 @@ export class AcessarPagina {
 
     // Substituí o <any> por um contrato simples
     this.http
-      .get<{ valid: boolean; id?: number }>(`http://localhost:8080/access/check/${key}`)
+      .get<{ valid: boolean; id?: number }>(`http://89.167.42.44:8080/access/check/${key}`)
       .subscribe({
         next: (res) => {
           if (res.valid) {

@@ -12,29 +12,29 @@ import { FormsModule } from '@angular/forms';
 export class MostrarPaginas implements OnInit {
   // Lista de páginas
   paginas: any[] = [];
-  
+
   // Filtros
   filtroNome: string = '';
   filtroSerialKey: string = '';
   filtroTipo: string = '';
-  
+
   // Paginação
   paginaAtual: number = 1;
   itensPorPagina: number = 10;
   totalPaginas: number = 1;
-  
+
   // Ordenação
   ordenarPor: string = 'id';
   ordemAscendente: boolean = false;
-  
+
   // Loading e estados
   carregando: boolean = false;
   erro: string = '';
-  
+
   // Modal de detalhes
   paginaDetalhes: any = null;
   mostrarModal: boolean = false;
-  
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -44,8 +44,8 @@ export class MostrarPaginas implements OnInit {
   carregarPaginas() {
     this.carregando = true;
     this.erro = '';
-    
-    this.http.get<any[]>('http://localhost:8080/pagina')
+
+    this.http.get<any[]>('http://89.167.42.44:8080/pagina')
       .subscribe({
         next: (data) => {
           this.paginas = data;
@@ -63,42 +63,42 @@ export class MostrarPaginas implements OnInit {
   // Filtra as páginas
   get paginasFiltradas() {
     let filtradas = this.paginas;
-    
+
     // Filtro por nome
     if (this.filtroNome) {
-      filtradas = filtradas.filter(p => 
+      filtradas = filtradas.filter(p =>
         p.nomeCartao?.toLowerCase().includes(this.filtroNome.toLowerCase())
       );
     }
-    
+
     // Filtro por serial key
     if (this.filtroSerialKey) {
-      filtradas = filtradas.filter(p => 
+      filtradas = filtradas.filter(p =>
         p.serialKey?.toLowerCase().includes(this.filtroSerialKey.toLowerCase())
       );
     }
-    
+
     // Filtro por tipo
     if (this.filtroTipo) {
-      filtradas = filtradas.filter(p => 
+      filtradas = filtradas.filter(p =>
         p.typePage?.toLowerCase() === this.filtroTipo.toLowerCase()
       );
     }
-    
+
     // Ordenação
     filtradas.sort((a, b) => {
       let valorA = a[this.ordenarPor];
       let valorB = b[this.ordenarPor];
-      
+
       // Converte para string se for nulo
       valorA = valorA === null ? '' : valorA;
       valorB = valorB === null ? '' : valorB;
-      
+
       if (valorA < valorB) return this.ordemAscendente ? -1 : 1;
       if (valorA > valorB) return this.ordemAscendente ? 1 : -1;
       return 0;
     });
-    
+
     return filtradas;
   }
 
@@ -168,7 +168,7 @@ export class MostrarPaginas implements OnInit {
   // Deletar página
   deletarPagina(id: number) {
     if (confirm('Tem certeza que deseja excluir esta página?')) {
-      this.http.delete(`http://localhost:8080/pagina/${id}`)
+      this.http.delete(`http://89.167.42.44:8080/pagina/${id}`)
         .subscribe({
           next: () => {
             this.paginas = this.paginas.filter(p => p.id !== id);
@@ -200,13 +200,13 @@ export class MostrarPaginas implements OnInit {
   }
 
   get paginasComDados(): number {
-    return this.paginas.filter(p => 
+    return this.paginas.filter(p =>
       p.nomeCartao || p.instagram || p.whatsapp || p.email
     ).length;
   }
 
   get paginasEmBranco(): number {
-    return this.paginas.filter(p => 
+    return this.paginas.filter(p =>
       !p.nomeCartao && !p.instagram && !p.whatsapp && !p.email
     ).length;
   }

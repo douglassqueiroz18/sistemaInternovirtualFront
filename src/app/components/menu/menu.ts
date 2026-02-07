@@ -68,11 +68,11 @@ export class Menu {
     if (rota.precisaSerialKey) {
       url += this.serialKeyInput;
     }
-    
+
     window.location.href = url;
   }
   carregarPaginaAleatoria() {
-    this.http.get<any[]>('http://localhost:8080/pagina')
+    this.http.get<any[]>('http://89.167.42.44:8080/pagina')
       .subscribe({
         next: (paginas) => {
           if (paginas.length > 0) {

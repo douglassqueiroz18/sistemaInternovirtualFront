@@ -15,7 +15,7 @@ export class CriarPagina {
   isLoading: boolean = false;
   mensagem: string = '';
   resultado: any = null;
-  
+
   constructor(private http: HttpClient) {}
 
   iniciarCriacao() {
@@ -29,13 +29,13 @@ export class CriarPagina {
   confirmarCriacao() {
     this.isLoading = true;
     this.mostrarConfirmacao = false;
-    
+
     // Request BEM SIMPLES - só a quantidade
     const request = {
       quantidade: this.quantidade
     };
 
-    this.http.post('http://localhost:8080/pagina/batch-simples', request)
+    this.http.post('http://89.167.42.44:8080/pagina/batch-simples', request)
       .subscribe({
         next: (response: any) => {
           this.isLoading = false;

@@ -29,7 +29,7 @@ ngOnInit(){
 }
   loadPageData() {
   const serialKey = this.route.snapshot.paramMap.get('serialKey');
-  const url = `http://localhost:8080/pagina/${serialKey}`;
+  const url = `http://89.167.42.44:8080/pagina/${serialKey}`;
 
   this.http.get<PageData | PageData[]>(url).subscribe(data => {
     if (data) {
