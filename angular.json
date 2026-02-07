@@ -61,6 +61,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {"allowedHosts": ["www.virtualnfc.com"]},
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
