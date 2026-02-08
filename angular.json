@@ -61,7 +61,17 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "options": {"allowedHosts": ["www.virtualnfc.com"]},
+          "options": {
+                        "allowedHosts": [
+                                          "www.virtualnfc.com",
+                                          "virtualnfc.com",
+                                          "89.167.42.44",
+                                          "localhost",
+                                          "0.0.0.0"
+                                        ]
+    ,"port": 4200,
+    "host": "0.0.0.0",
+    "publicHost": "https://www.virtualnfc.com"},
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
