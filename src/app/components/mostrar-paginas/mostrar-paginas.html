@@ -1,6 +1,11 @@
 <div class="container">
-  <h1>📋 Gerenciamento de Páginas</h1>
-  
+   <div class="header-navigation">
+    <button (click)="voltar()" class="btn-voltar">
+      ← Voltar
+    </button>
+  </div>
+    <h1>Gerenciamento</h1>
+
   <!-- Status Cards -->
   <div class="status-cards">
     <div class="status-card">
@@ -10,7 +15,7 @@
         <div class="status-value">{{ totalPaginasContagem }}</div>
       </div>
     </div>
-    
+
     <div class="status-card">
       <div class="status-icon">✅</div>
       <div class="status-info">
@@ -18,7 +23,7 @@
         <div class="status-value">{{ paginasComDados }}</div>
       </div>
     </div>
-    
+
     <div class="status-card">
       <div class="status-icon">⏳</div>
       <div class="status-info">
@@ -26,7 +31,7 @@
         <div class="status-value">{{ paginasEmBranco }}</div>
       </div>
     </div>
-    
+
     <div class="status-card">
       <div class="status-icon">🔍</div>
       <div class="status-info">
@@ -42,32 +47,32 @@
     <div class="filtros-grid">
       <div class="filtro-item">
         <label for="filtroNome">Nome</label>
-        <input 
-          type="text" 
-          id="filtroNome" 
-          [(ngModel)]="filtroNome" 
+        <input
+          type="text"
+          id="filtroNome"
+          [(ngModel)]="filtroNome"
           placeholder="Filtrar por nome..."
-          (input)="calcularPaginacao()"
+          (input)="filtrarPaginas()"
         />
       </div>
-      
+
       <div class="filtro-item">
         <label for="filtroSerialKey">Serial Key</label>
-        <input 
-          type="text" 
-          id="filtroSerialKey" 
-          [(ngModel)]="filtroSerialKey" 
+        <input
+          type="text"
+          id="filtroSerialKey"
+          [(ngModel)]="filtroSerialKey"
           placeholder="Filtrar por serial key..."
-          (input)="calcularPaginacao()"
+          (input)="filtrarPaginas()"
         />
       </div>
-      
+
       <div class="filtro-item">
         <label for="filtroTipo">Tipo</label>
-        <select 
-          id="filtroTipo" 
+        <select
+          id="filtroTipo"
           [(ngModel)]="filtroTipo"
-          (change)="calcularPaginacao()"
+          (change)="filtrarPaginas()"
         >
           <option value="">Todos os tipos</option>
           <option value="photographer">Fotógrafo</option>
@@ -75,7 +80,7 @@
           <option value="personal">Pessoal</option>
         </select>
       </div>
-      
+
       <div class="filtro-item">
         <label>&nbsp;</label>
         <button (click)="resetarFiltros()" class="btn-resetar">
@@ -88,12 +93,7 @@
     </div>
   </div>
 
-  <!-- Loading e Erro -->
-  <div *ngIf="carregando" class="loading">
-    <div class="spinner"></div>
-    <p>Carregando páginas...</p>
-  </div>
-  
+
   <div *ngIf="erro" class="erro">
     ❌ {{ erro }}
     <button (click)="carregarPaginas()">Tentar novamente</button>
@@ -107,8 +107,8 @@
       </div>
       <div class="itens-por-pagina">
         <label for="itensPorPagina">Itens por página:</label>
-        <select 
-          id="itensPorPagina" 
+        <select
+          id="itensPorPagina"
           [(ngModel)]="itensPorPagina"
           (change)="paginaAtual = 1; calcularPaginacao()"
         >
@@ -124,20 +124,14 @@
       <table class="tabela">
         <thead>
           <tr>
-            <th (click)="ordenar('id')" class="ordenavel">
-              ID 
-              <span *ngIf="ordenarPor === 'id'">
-                {{ ordemAscendente ? '▲' : '▼' }}
-              </span>
-            </th>
             <th (click)="ordenar('nomeCartao')" class="ordenavel">
-              Nome 
+              Nome
               <span *ngIf="ordenarPor === 'nomeCartao'">
                 {{ ordemAscendente ? '▲' : '▼' }}
               </span>
             </th>
             <th (click)="ordenar('serialKey')" class="ordenavel">
-              Serial Key 
+              Serial Key
               <span *ngIf="ordenarPor === 'serialKey'">
                 {{ ordemAscendente ? '▲' : '▼' }}
               </span>
@@ -145,13 +139,12 @@
             <th>Tipo</th>
             <th>Contatos</th>
             <th>Criado</th>
-            <th>Ações</th>
+            <th>Deletar</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let pagina of paginasPaginaAtual" 
+          <tr *ngFor="let pagina of paginasPaginaAtual"
               [class.pagina-em-branco]="!pagina.nomeCartao && !pagina.instagram && !pagina.whatsapp">
-            <td class="id">{{ pagina.id }}</td>
             <td>
               <div class="nome-cartao" [class.vazio]="!pagina.nomeCartao">
                 {{ pagina.nomeCartao || '(Sem nome)' }}
@@ -160,8 +153,8 @@
             <td>
               <div class="serial-key">
                 <code>{{ pagina.serialKey }}</code>
-                <button (click)="copiarSerialKey(pagina.serialKey)" 
-                        class="btn-copiar" 
+                <button (click)="copiarSerialKey(pagina.serialKey)"
+                        class="btn-copiar"
                         title="Copiar Serial Key">
                   📋
                 </button>
@@ -191,18 +184,9 @@
             </td>
             <td>
               <div class="acoes">
-                <button (click)="abrirDetalhes(pagina)" 
-                        class="btn-detalhes" 
-                        title="Ver detalhes">
-                  👁️
-                </button>
-                <button (click)="copiarLinkAcesso(pagina.serialKey)" 
-                        class="btn-link" 
-                        title="Copiar link de acesso">
-                  🔗
-                </button>
-                <button (click)="deletarPagina(pagina.id)" 
-                        class="btn-deletar" 
+
+                <button (click)="deletarPagina(pagina.id)"
+                        class="btn-deletar"
                         title="Excluir página"
                         *ngIf="pagina.id">
                   🗑️
@@ -222,11 +206,11 @@
       <button (click)="mudarPagina(paginaAtual - 1)" [disabled]="paginaAtual === 1">
         ◀️
       </button>
-      
+
       <span class="pagina-info">
         Página {{ paginaAtual }} de {{ totalPaginas }}
       </span>
-      
+
       <button (click)="mudarPagina(paginaAtual + 1)" [disabled]="paginaAtual === totalPaginas">
         ▶️
       </button>
@@ -242,116 +226,5 @@
     </div>
   </div>
 
-  <!-- Modal de Detalhes -->
-  <div *ngIf="mostrarModal" class="modal-overlay" (click)="fecharModal()">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Detalhes da Página</h2>
-        <button (click)="fecharModal()" class="btn-fechar">×</button>
-      </div>
-      
-      <div *ngIf="paginaDetalhes" class="modal-content">
-        <div class="detalhes-grid">
-          <div class="detalhe-item">
-            <label>ID:</label>
-            <span>{{ paginaDetalhes.id }}</span>
-          </div>
-          
-          <div class="detalhe-item">
-            <label>Nome:</label>
-            <span>{{ paginaDetalhes.nomeCartao || '(Não definido)' }}</span>
-          </div>
-          
-          <div class="detalhe-item">
-            <label>Serial Key:</label>
-            <div class="serial-key-detalhe">
-              <code>{{ paginaDetalhes.serialKey }}</code>
-              <button (click)="copiarSerialKey(paginaDetalhes.serialKey)">
-                Copiar
-              </button>
-            </div>
-          </div>
-          
-          <div class="detalhe-item">
-            <label>Tipo:</label>
-            <span>{{ paginaDetalhes.typePage || '(Não definido)' }}</span>
-          </div>
-          
-          <div class="detalhe-item">
-            <label>Link de Acesso:</label>
-            <div class="link-detalhe">
-              <a [href]="gerarLinkAcesso(paginaDetalhes.serialKey)" target="_blank">
-                {{ gerarLinkAcesso(paginaDetalhes.serialKey) }}
-              </a>
-              <button (click)="copiarLinkAcesso(paginaDetalhes.serialKey)">
-                Copiar
-              </button>
-            </div>
-          </div>
-          
-          <div class="detalhe-item full-width">
-            <label>Contatos:</label>
-            <div class="contatos-detalhe">
-              <div *ngIf="paginaDetalhes.instagram">
-                <strong>Instagram:</strong> {{ paginaDetalhes.instagram }}
-              </div>
-              <div *ngIf="paginaDetalhes.whatsapp">
-                <strong>WhatsApp:</strong> {{ paginaDetalhes.whatsapp }}
-              </div>
-              <div *ngIf="paginaDetalhes.email">
-                <strong>Email:</strong> {{ paginaDetalhes.email }}
-              </div>
-              <div *ngIf="paginaDetalhes.facebook">
-                <strong>Facebook:</strong> {{ paginaDetalhes.facebook }}
-              </div>
-              <div *ngIf="paginaDetalhes.linkedin">
-                <strong>LinkedIn:</strong> {{ paginaDetalhes.linkedin }}
-              </div>
-              <div *ngIf="paginaDetalhes.tiktok">
-                <strong>TikTok:</strong> {{ paginaDetalhes.tiktok }}
-              </div>
-              <div *ngIf="paginaDetalhes.youtube">
-                <strong>YouTube:</strong> {{ paginaDetalhes.youtube }}
-              </div>
-              <div *ngIf="paginaDetalhes.site">
-                <strong>Site:</strong> {{ paginaDetalhes.site }}
-              </div>
-              <div *ngIf="!paginaDetalhes.instagram && !paginaDetalhes.whatsapp">
-                Nenhum contato cadastrado
-              </div>
-            </div>
-          </div>
-          
-          <div class="detalhe-item">
-            <label>Background:</label>
-            <div *ngIf="paginaDetalhes.background" 
-                 class="color-preview" 
-                 [style.background-color]="paginaDetalhes.background"
-                 [title]="paginaDetalhes.background">
-            </div>
-            <span *ngIf="!paginaDetalhes.background">(Não definido)</span>
-          </div>
-          
-          <div class="detalhe-item">
-            <label>Criado em:</label>
-            <span>{{ paginaDetalhes.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
-          </div>
-          
-          <div class="detalhe-item">
-            <label>Atualizado em:</label>
-            <span>{{ paginaDetalhes.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
-          </div>
-        </div>
-        
-        <div class="modal-actions">
-          <button (click)="copiarLinkAcesso(paginaDetalhes.serialKey)" class="btn-primary">
-            📋 Copiar Link
-          </button>
-          <button (click)="fecharModal()" class="btn-secondary">
-            Fechar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+
 </div>

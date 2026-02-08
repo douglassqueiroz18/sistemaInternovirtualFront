@@ -14,15 +14,13 @@
     </div>
 
     <!-- Logo/Imagem de Perfil -->
-    <div class="profile-section">
+    <div class="profile-section" *ngIf="data.logo">
       <div class="profile-image-container">
         <img *ngIf="data.logo"
              [src]="data.logo"
              [alt]="data.nomeCartao || 'Perfil'"
              class="profile-image">
-        <div *ngIf="!data.logo" class="profile-placeholder">
-          {{ getInitials(data.nomeCartao) }}
-        </div>
+
         <!-- Anel de ouro decorativo -->
         <div class="gold-ring"></div>
       </div>

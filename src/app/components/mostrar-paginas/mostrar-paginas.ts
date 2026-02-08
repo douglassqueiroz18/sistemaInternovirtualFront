@@ -24,7 +24,7 @@ export class MostrarPaginas implements OnInit {
   totalPaginas: number = 1;
 
   // Ordenação
-  ordenarPor: string = 'id';
+  ordenarPor: string = 'nomeCartao';
   ordemAscendente: boolean = false;
 
   // Loading e estados
@@ -59,7 +59,9 @@ export class MostrarPaginas implements OnInit {
         }
       });
   }
-
+  voltar(){
+    window.history.back();
+  }
   // Filtra as páginas
   get paginasFiltradas() {
     let filtradas = this.paginas;
@@ -127,6 +129,8 @@ export class MostrarPaginas implements OnInit {
       this.ordenarPor = coluna;
       this.ordemAscendente = true;
     }
+      this.filtrarPaginas(); // Adicione esta linha
+
   }
 
   // Modal de detalhes
@@ -193,6 +197,11 @@ export class MostrarPaginas implements OnInit {
   // Contadores
   get totalPaginasContagem(): number {
     return this.paginas.length;
+  }
+  filtrarPaginas() {
+    // Força a detecção de mudanças recalculando tudo
+    this.calcularPaginacao();
+
   }
 
   get paginasFiltradasContagem(): number {

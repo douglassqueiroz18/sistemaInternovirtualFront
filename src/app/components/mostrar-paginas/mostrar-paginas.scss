@@ -28,7 +28,7 @@ h1 {
   gap: 15px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   transition: transform 0.3s;
-  
+
   &:hover {
     transform: translateY(-5px);
   }
@@ -44,7 +44,7 @@ h1 {
     font-size: 0.9rem;
     margin-bottom: 5px;
   }
-  
+
   .status-value {
     font-size: 1.8rem;
     font-weight: bold;
@@ -59,7 +59,7 @@ h1 {
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  
+
   h3 {
     margin-top: 0;
     margin-bottom: 15px;
@@ -80,14 +80,14 @@ h1 {
     color: #555;
     font-weight: 500;
   }
-  
+
   input, select {
     width: 100%;
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 0.95rem;
-    
+
     &:focus {
       outline: none;
       border-color: #4a90e2;
@@ -105,7 +105,7 @@ h1 {
   cursor: pointer;
   font-size: 0.9rem;
   margin-right: 10px;
-  
+
   &:hover {
     background: #5a6268;
   }
@@ -113,7 +113,7 @@ h1 {
 
 .btn-recargar {
   background: #17a2b8;
-  
+
   &:hover {
     background: #138496;
   }
@@ -143,7 +143,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 10px;
-  
+
   select {
     padding: 5px 10px;
     border: 1px solid #ddd;
@@ -158,7 +158,7 @@ h1 {
 .tabela {
   width: 100%;
   border-collapse: collapse;
-  
+
   th {
     background: #f8f9fa;
     padding: 12px 15px;
@@ -167,23 +167,23 @@ h1 {
     color: #333;
     border-bottom: 2px solid #dee2e6;
     cursor: pointer;
-    
+
     &.ordenavel:hover {
       background: #e9ecef;
     }
   }
-  
+
   td {
     padding: 12px 15px;
     border-bottom: 1px solid #dee2e6;
     vertical-align: middle;
   }
-  
+
   tr {
     &:hover {
       background: #f8f9fa;
     }
-    
+
     &.pagina-em-branco {
       opacity: 0.7;
       background: #f0f8ff;
@@ -199,7 +199,7 @@ h1 {
 
 .nome-cartao {
   font-weight: 500;
-  
+
   &.vazio {
     color: #999;
     font-style: italic;
@@ -210,7 +210,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 10px;
-  
+
   code {
     font-family: 'Courier New', monospace;
     background: #f8f9fa;
@@ -226,7 +226,7 @@ h1 {
   cursor: pointer;
   font-size: 1rem;
   padding: 5px;
-  
+
   &:hover {
     color: #4a90e2;
   }
@@ -238,22 +238,22 @@ h1 {
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
-  
+
   &.tipo-photographer {
     background: #e3f2fd;
     color: #1565c0;
   }
-  
+
   &.tipo-restaurant {
     background: #f3e5f5;
     color: #7b1fa2;
   }
-  
+
   &.tipo-personal {
     background: #e8f5e8;
     color: #2e7d32;
   }
-  
+
   &.tipo-vazio {
     background: #f5f5f5;
     color: #757575;
@@ -263,18 +263,18 @@ h1 {
 .contatos {
   display: flex;
   gap: 8px;
-  
+
   .contato {
     font-size: 1.2rem;
     cursor: default;
-    
+
     &.instagram:hover { color: #e4405f; }
     &.whatsapp:hover { color: #25d366; }
     &.email:hover { color: #ea4335; }
     &.facebook:hover { color: #1877f2; }
     &.site:hover { color: #4a90e2; }
   }
-  
+
   .contato-vazio {
     color: #999;
     font-size: 0.9rem;
@@ -290,14 +290,14 @@ h1 {
 .acoes {
   display: flex;
   gap: 8px;
-  
+
   button {
     background: none;
     border: none;
     cursor: pointer;
     font-size: 1.2rem;
     padding: 5px;
-    
+
     &.btn-detalhes:hover { color: #4a90e2; }
     &.btn-link:hover { color: #25d366; }
     &.btn-deletar:hover { color: #dc3545; }
@@ -311,24 +311,24 @@ h1 {
   align-items: center;
   gap: 10px;
   margin-top: 20px;
-  
+
   button {
     background: white;
     border: 1px solid #ddd;
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
-    
+
     &:hover:not(:disabled) {
       background: #f8f9fa;
     }
-    
+
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
   }
-  
+
   .pagina-info {
     margin: 0 15px;
     color: #666;
@@ -339,7 +339,7 @@ h1 {
 .loading {
   text-align: center;
   padding: 40px;
-  
+
   .spinner {
     border: 4px solid #f3f3f3;
     border-top: 4px solid #4a90e2;
@@ -362,7 +362,7 @@ h1 {
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-  
+
   button {
     background: #dc3545;
     color: white;
@@ -371,7 +371,7 @@ h1 {
     border-radius: 5px;
     margin-top: 10px;
     cursor: pointer;
-    
+
     &:hover {
       background: #c82333;
     }
@@ -382,7 +382,7 @@ h1 {
   text-align: center;
   padding: 40px;
   color: #666;
-  
+
   button {
     background: #4a90e2;
     color: white;
@@ -391,7 +391,7 @@ h1 {
     border-radius: 5px;
     margin-top: 15px;
     cursor: pointer;
-    
+
     &:hover {
       background: #357ae8;
     }
@@ -428,7 +428,7 @@ h1 {
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid #dee2e6;
-  
+
   h2 {
     margin: 0;
     color: #333;
@@ -441,7 +441,7 @@ h1 {
   font-size: 2rem;
   cursor: pointer;
   color: #666;
-  
+
   &:hover {
     color: #333;
   }
@@ -461,18 +461,18 @@ h1 {
 .detalhe-item {
   display: flex;
   flex-direction: column;
-  
+
   label {
     font-weight: 600;
     color: #555;
     margin-bottom: 5px;
     font-size: 0.9rem;
   }
-  
+
   span, div {
     color: #333;
   }
-  
+
   &.full-width {
     grid-column: 1 / -1;
   }
@@ -482,7 +482,7 @@ h1 {
   display: flex;
   gap: 10px;
   align-items: center;
-  
+
   button {
     background: #4a90e2;
     color: white;
@@ -491,16 +491,16 @@ h1 {
     border-radius: 3px;
     font-size: 0.8rem;
     cursor: pointer;
-    
+
     &:hover {
       background: #357ae8;
     }
   }
-  
+
   a {
     color: #4a90e2;
     text-decoration: none;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -511,10 +511,10 @@ h1 {
   background: #f8f9fa;
   padding: 15px;
   border-radius: 5px;
-  
+
   div {
     margin-bottom: 8px;
-    
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -537,28 +537,28 @@ h1 {
   gap: 10px;
   padding-top: 20px;
   border-top: 1px solid #dee2e6;
-  
+
   button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: 500;
-    
+
     &.btn-primary {
       background: #4a90e2;
       color: white;
       border: none;
-      
+
       &:hover {
         background: #357ae8;
       }
     }
-    
+
     &.btn-secondary {
       background: #f8f9fa;
       color: #333;
       border: 1px solid #ddd;
-      
+
       &:hover {
         background: #e9ecef;
       }
@@ -571,27 +571,47 @@ h1 {
   .container {
     padding: 10px;
   }
-  
+
   .status-cards {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .filtros-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .tabela-header {
     flex-direction: column;
     gap: 10px;
     align-items: flex-start;
   }
-  
+
   .acoes {
     flex-direction: column;
     gap: 5px;
   }
-  
+
   .detalhes-grid {
     grid-template-columns: 1fr;
   }
+}
+.header-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-voltar {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-voltar:hover {
+  background-color: #5a6268;
 }

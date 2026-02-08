@@ -12,7 +12,6 @@ import { HttpClient } from '@angular/common/http';
 export class CriarPagina {
   quantidade: number = 1;
   mostrarConfirmacao: boolean = false;
-  isLoading: boolean = false;
   mensagem: string = '';
   resultado: any = null;
 
@@ -27,7 +26,6 @@ export class CriarPagina {
   }
 
   confirmarCriacao() {
-    this.isLoading = true;
     this.mostrarConfirmacao = false;
 
     // Request BEM SIMPLES - só a quantidade
@@ -38,12 +36,10 @@ export class CriarPagina {
     this.http.post('http://89.167.42.44:8080/pagina/batch-simples', request)
       .subscribe({
         next: (response: any) => {
-          this.isLoading = false;
           this.resultado = response;
           this.mensagem = `✅ ${response.mensagem}`;
         },
         error: (error) => {
-          this.isLoading = false;
           this.mensagem = `❌ Erro: ${error.error?.message || error.message}`;
         }
       });
