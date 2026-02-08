@@ -71,7 +71,6 @@
                                         ]
     ,"port": 4200,
     "host": "0.0.0.0",
-    "publicHost": "https://www.virtualnfc.com"},
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
