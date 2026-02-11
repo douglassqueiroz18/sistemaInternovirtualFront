@@ -4,11 +4,9 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: app-frontend
-    ports:
-      - "4200:4200"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./dist:/app/dist
+    command: ["npm", "run", "build"]
     networks:
       - app-network
 
