@@ -72,7 +72,7 @@ export class Menu {
     window.location.href = url;
   }
   carregarPaginaAleatoria() {
-    this.http.get<any[]>('http://89.167.42.44:8080/pagina')
+    this.http.get<any[]>('https://virtualnfc.com/pagina')
       .subscribe({
         next: (paginas) => {
           if (paginas.length > 0) {

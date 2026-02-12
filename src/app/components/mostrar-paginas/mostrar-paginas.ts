@@ -45,7 +45,7 @@ export class MostrarPaginas implements OnInit {
     this.carregando = true;
     this.erro = '';
 
-    this.http.get<any[]>('http://89.167.42.44:8080/pagina')
+    this.http.get<any[]>('https://virtualnfc.com/pagina')
       .subscribe({
         next: (data) => {
           this.paginas = data;
@@ -172,7 +172,7 @@ export class MostrarPaginas implements OnInit {
   // Deletar página
   deletarPagina(id: number) {
     if (confirm('Tem certeza que deseja excluir esta página?')) {
-      this.http.delete(`http://89.167.42.44:8080/pagina/${id}`)
+      this.http.delete(`https://virtualnfc.com/pagina/${id}`)
         .subscribe({
           next: () => {
             this.paginas = this.paginas.filter(p => p.id !== id);

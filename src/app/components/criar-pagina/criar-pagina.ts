@@ -33,7 +33,7 @@ export class CriarPagina {
       quantidade: this.quantidade
     };
 
-    this.http.post('http://89.167.42.44:8080/pagina/batch-simples', request)
+    this.http.post('https://virtualnfc.com/pagina/batch-simples', request)
       .subscribe({
         next: (response: any) => {
           this.resultado = response;
