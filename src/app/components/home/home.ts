@@ -9,5 +9,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.scss',
 })
 export class Home {
-
+  public irEditar(){
+    window.location.href = "/#/access";
+  }
 }

@@ -1,19 +1,22 @@
 <header class="main-header">
-      <div class="header-container">
-        <div class="logo-section" routerLink="/">
-          <img src="https://via.placeholder.com/40" alt="Logo" class="profile-img">
-          <span class="brand-name">VirtualNFC</span>
-        </div>
+  <div class="header-container">
+    <div class="logo-section" routerLink="/">
+      <img src="https://virtualnfcbucket.sfo3.digitaloceanspaces.com/uploads/logo.png" alt="Logo" class="profile-img" />
+      <span class="brand-name">VirtualNFC</span>
+    </div>
+    <nav class="editarCartao" (click)="irEditar()">Editar Cartão</nav>
+  </div>
+</header>
 
-
-      </div>
-    </header>
 <div class="home-container">
+<video autoplay muted loop playsinline preload="auto" class="bg-video">
+  <source src="https://virtualnfcbucket.sfo3.digitaloceanspaces.com/uploads/WhatsApp%20Video%202026-02-16%20at%2018.34.23.mp4" type="video/mp4">
+</video>
   <div class="content">
-    <h1>Bem-vindo à VirtualNFC</h1>
-    <p>Sua plataforma para gerenciamento de páginas e cartões inteligentes.</p>
+    <h1>Bem-vindo à <span class="highlight">VirtualNFC</span></h1>
+    <p>Transforme sua presença física em digital com apenas um toque</p>
     <div class="actions">
-      <a routerLink="/criar-pagina" class="button secondary">Loja</a>
+      <a routerLink="/loja" class="button secondary">Visitar Loja</a>
     </div>
   </div>
 </div>
