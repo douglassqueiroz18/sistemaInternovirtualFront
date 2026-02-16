@@ -466,6 +466,12 @@
                     <span *ngIf="pageData.typePage === 4" class="current-badge">Atual</span>
                   </div>
                 </mat-option>
+                                <mat-option [value]="0">
+                  <div class="template-option">
+                    <small class="template-subtitle">Padrão</small>
+                    <span *ngIf="pageData.typePage === 0" class="current-badge">Atual</span>
+                  </div>
+                </mat-option>
               </mat-select>
 
               <!-- Mostrar qual template está selecionado fora do select -->
