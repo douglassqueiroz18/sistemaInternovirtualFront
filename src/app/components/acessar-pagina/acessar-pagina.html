@@ -1,26 +1,68 @@
-<div class="access-container">
+<div class="access-wrapper">
+  <div class="access-card">
+    <!-- Ícone decorativo -->
+    <div class="icon-lock">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+    </div>
 
-  <h2>Acessar Página</h2>
+    <h2 class="title">Acesso Restrito</h2>
 
-  <p class="description">
-    Digite o código serial do seu cartão para visualizar sua página.
-  </p>
+    <p class="subtitle">
+      Digite o código serial do seu cartão para visualizar sua página exclusiva.
+    </p>
 
-  <div class="form-box">
-    <input
-      type="text"
-      placeholder="Digite seu serial-key"
-      [(ngModel)]="serialKey"
-      maxlength="12"
-    />
+    <div class="input-group">
+      <div class="input-field">
+        <input
+          type="text"
+          id="serialKey"
+          placeholder=" "
+          [(ngModel)]="serialKey"
+          maxlength="12"
+          (keyup.enter)="buscarPagina()"
+        />
+        <label for="serialKey" class="input-label">Serial Key</label>
+        <span class="input-highlight"></span>
+      </div>
 
-    <button (click)="buscarPagina()" [disabled]="loading()">
-      {{ loading() ? "Buscando..." : "Acessar" }}
-    </button>
+      <button
+        class="access-button"
+        (click)="buscarPagina()"
+        [disabled]="loading()"
+        [class.loading]="loading()"
+      >
+        <span class="button-text">{{ loading() ? 'Acessando...' : 'Acessar Página' }}</span>
+        <span class="button-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </span>
+      </button>
+    </div>
 
     @if (errorMessage()) {
-      <p class="error">{{ errorMessage() }}</p>
+      <div class="error-message">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ errorMessage() }}</span>
+      </div>
     }
-  </div>
 
+    <!-- Informação adicional -->
+    <div class="info-text">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="12" x2="12" y2="16"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <span>O código serial contém 12 dígitos e está no verso do seu cartão</span>
+    </div>
+  </div>
 </div>
