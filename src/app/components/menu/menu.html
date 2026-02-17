@@ -9,27 +9,27 @@
     <div class="acesso-rapido">
       <h2>🔑 Acesso Rápido</h2>
       <div class="input-group">
-        <input 
-          type="text" 
-          [(ngModel)]="serialKeyInput" 
+        <input
+          type="text"
+          [(ngModel)]="serialKeyInput"
           placeholder="Digite a serial key da página..."
           class="serial-input"
-          (keyup.enter)="navegarParaRota({path: '/page/', precisaSerialKey: true})"
+          (keyup.enter)="navegarParaRota({path: '/#/page/', precisaSerialKey: true})"
         />
         <div class="botoes-rapidos">
-          <button 
-            (click)="navegarParaRota({path: '/page/', precisaSerialKey: true})"
+          <button
+            (click)="navegarParaRota({path: '/#/page/', precisaSerialKey: true})"
             [disabled]="!serialKeyInput"
             class="btn-visualizar"
           >
-            👁️ Visualizar
+             Visualizar
           </button>
-          <button 
+          <button
             (click)="navegarParaRota({path: '/edit/', precisaSerialKey: true})"
             [disabled]="!serialKeyInput"
             class="btn-editar"
           >
-            ✏️ Editar
+             Editar
           </button>
         </div>
       </div>
@@ -37,8 +37,8 @@
 
     <!-- Grid de funcionalidades -->
     <div class="funcionalidades-grid">
-      <h2>🚀 Funcionalidades</h2>
-      
+      <h2> Funcionalidades</h2>
+
       <div class="grid">
         <!-- Criar Múltiplas -->
         <div class="card">
@@ -56,7 +56,6 @@
 
         <!-- Gerenciar Páginas -->
         <div class="card">
-          <div class="card-icon">📋</div>
           <div class="card-content">
             <h3>Gerenciar</h3>
             <p>Visualize e gerencie todas as páginas criadas</p>
@@ -70,7 +69,6 @@
 
         <!-- Acessar por Serial Key -->
         <div class="card">
-          <div class="card-icon">🔗</div>
           <div class="card-content">
             <h3>Acessar Página</h3>
             <p>Acesse qualquer página usando sua serial key</p>
