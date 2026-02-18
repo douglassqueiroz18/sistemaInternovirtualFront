@@ -16,6 +16,7 @@ export class Photographer {
   flashEffect = false;
   currentYear = new Date().getFullYear();
   showBackgroundOverlay = true;
+  pixCopiado: string | null = null;
 
     ngOnInit() {
     // Efeito de flash periódico
@@ -65,7 +66,15 @@ export class Photographer {
 
     return style;
   }
-
+  copiarPix(key: string) {
+    navigator.clipboard.writeText(key);
+    alert("Chave PIX copiada!");
+  }
+    openLink(url: string): void {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
   // Método auxiliar para verificar se é URL de imagem
   isImageUrl(value: string): boolean {
     if (!value) return false;
@@ -97,7 +106,7 @@ export class Photographer {
     setTimeout(() => {
       this.flashEffect = false;
     }, 500);
-    
+
 
   }
   // Métodos auxiliares
@@ -128,15 +137,15 @@ export class Photographer {
   }
 optimizeImageUrl(url: string, width: number = 1920, quality: number = 80): string {
     if (!url || !this.isImageUrl(url)) return url;
-    
+
     // Para Cloudinary (exemplo)
     // if (url.includes('cloudinary.com')) {
     //   return this.optimizeCloudinaryUrl(url, width, quality);
     // }
-    
+
     // Para outras URLs, você pode adicionar parâmetros de otimização
     // se o serviço suportar (como Imgix, ImageKit, etc.)
-    
+
     return url;
   }
   // Método para otimizar imagens externas
@@ -148,7 +157,7 @@ private optimizeCloudinaryUrl(url: string, width: number, quality: number): stri
       'c_fill',
       'f_auto' // Formato automático (webp se suportado)
     ].join(',');
-    
+
     // Insere as transformações na URL do Cloudinary
     return url.replace(/\/upload\//, `/upload/${transformations}/`);
   }
@@ -159,7 +168,7 @@ private optimizeCloudinaryUrl(url: string, width: number, quality: number): stri
 onBackgroundError() {
   console.error('Failed to load background image');
   this.showBackgroundOverlay = false;
-  
+
   // Fallback para cor sólida
   const fallbackStyle = this.getCardStyle();
   if (!fallbackStyle.includes('background-color')) {

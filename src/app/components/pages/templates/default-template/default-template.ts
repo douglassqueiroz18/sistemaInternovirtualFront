@@ -11,6 +11,20 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class DefaultTemplate implements OnInit {
   @Input() data: any = {};
+  pixCopiado: string | null = null;
+copiarPix(chave: string) {
+  navigator.clipboard.writeText(chave).then(() => {
+    this.pixCopiado = chave;
+    setTimeout(() => {
+      this.pixCopiado = null;
+    }, 2000);
+
+    // Opcional: mostrar mensagem de sucesso
+    alert('PIX copiado!');
+  }).catch(err => {
+    console.error('Erro ao copiar PIX:', err);
+  });
+}
 showEmbeddedMap = true; // Controla se mostra o mapa embed
   ngOnInit() {
     // Inicializa dados padrão se vazio

@@ -23,7 +23,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   overflow-x: hidden;
   overflow-y: auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  
+
   &::before {
     content: '';
     position: fixed;
@@ -43,7 +43,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  
+
   .audio-wave {
     position: absolute;
     bottom: 0;
@@ -59,7 +59,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
       transparent
     );
     animation: waveFlow 8s linear infinite;
-    
+
     &:nth-child(1) {
       animation-delay: 0s;
       opacity: 0.6;
@@ -86,13 +86,13 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  
+
   .note {
     position: absolute;
     font-size: clamp(24px, 4vw, 32px);
     color: rgba(255, 255, 255, 0.1);
     animation: floatNote 20s linear infinite;
-    
+
     &:nth-child(1) { top: 10%; left: 5%; }
     &:nth-child(2) { top: 20%; right: 10%; animation-delay: 4s; }
     &:nth-child(3) { bottom: 30%; left: 15%; animation-delay: 8s; }
@@ -127,7 +127,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   align-items: center;
   gap: 15px;
   z-index: 100;
-  
+
   .control-btn {
     width: 40px;
     height: 40px;
@@ -141,24 +141,24 @@ $glass-effect: rgba(255, 255, 255, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.2);
       transform: scale(1.1);
     }
-    
+
     mat-icon {
       font-size: 24px;
     }
   }
-  
+
   .volume-slider {
     width: 100px;
     height: 4px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
     position: relative;
-    
+
     .slider-track {
       position: absolute;
       left: 0;
@@ -168,7 +168,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
       background: linear-gradient(90deg, $primary-purple, $secondary-pink);
       border-radius: 2px;
     }
-    
+
     .slider-thumb {
       position: absolute;
       left: 70%;
@@ -181,11 +181,11 @@ $glass-effect: rgba(255, 255, 255, 0.1);
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
   }
-  
+
   @media (max-width: 768px) {
     top: 15px;
     right: 15px;
-    
+
     .volume-slider {
       display: none;
     }
@@ -206,7 +206,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   background: rgba(18, 18, 18, 0.9);
   border-radius: 24px;
   padding: clamp(20px, 4vw, 40px);
-  box-shadow: 
+  box-shadow:
     0 25px 50px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
@@ -221,7 +221,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   align-items: center;
   gap: 30px;
   margin-bottom: 40px;
-  
+
   @media (min-width: 768px) {
     flex-direction: row;
     align-items: center;
@@ -232,28 +232,28 @@ $glass-effect: rgba(255, 255, 255, 0.1);
 
 .vinyl-player-section {
   flex-shrink: 0;
-  
+
   .turntable {
     position: relative;
     width: clamp(180px, 40vw, 250px);
     height: clamp(180px, 40vw, 250px);
-    
+
     .vinyl {
       width: 100%;
       height: 100%;
       background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
       border-radius: 50%;
       position: relative;
-      box-shadow: 
+      box-shadow:
         0 20px 40px rgba(0, 0, 0, 0.8),
         inset 0 0 0 15px #111,
         inset 0 0 0 16px #333;
       transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-      
+
       &.playing {
         animation: spin 3s linear infinite;
       }
-      
+
       .vinyl-label {
         position: absolute;
         top: 50%;
@@ -269,14 +269,14 @@ $glass-effect: rgba(255, 255, 255, 0.1);
         overflow: hidden;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         z-index: 2;
-        
+
         .artist-photo {
           width: 100%;
           height: 100%;
           object-fit: cover;
           border-radius: 50%;
         }
-        
+
         .artist-initials {
           width: 100%;
           height: 100%;
@@ -290,17 +290,17 @@ $glass-effect: rgba(255, 255, 255, 0.1);
           letter-spacing: 1px;
         }
       }
-      
+
       .vinyl-grooves {
         position: absolute;
         inset: 20px;
         border-radius: 50%;
-        
+
         .groove {
           position: absolute;
           border-radius: 50%;
           border: 1px solid rgba(255, 255, 255, 0.1);
-          
+
           &:nth-child(1) {
             inset: 8px;
           }
@@ -316,7 +316,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
         }
       }
     }
-    
+
     .turntable-arm {
       position: absolute;
       top: 0;
@@ -328,11 +328,11 @@ $glass-effect: rgba(255, 255, 255, 0.1);
       transform: rotate(-30deg);
       transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 3;
-      
+
       &.playing {
         transform: rotate(-15deg);
       }
-      
+
       &::after {
         content: '';
         position: absolute;
@@ -345,7 +345,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
         border-radius: 50%;
       }
     }
-    
+
     .turntable-base {
       position: absolute;
       bottom: -20px;
@@ -370,7 +370,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   text-align: center;
   flex: 1;
   min-width: 0; // Importante para evitar overflow
-  
+
   .artist-name {
     font-size: clamp(28px, 6vw, 42px);
     font-weight: 800;
@@ -385,7 +385,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
     word-break: break-word;
     overflow-wrap: break-word;
   }
-  
+
   .artist-genre {
     display: inline-flex;
     align-items: center;
@@ -396,12 +396,12 @@ $glass-effect: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 25px;
-    
+
     mat-icon {
       color: $secondary-pink;
       font-size: 20px;
     }
-    
+
     span {
       color: white;
       font-weight: 500;
@@ -422,13 +422,13 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   gap: 3px;
   margin: 30px auto;
   max-width: 300px;
-  
+
   .bar {
     width: 8px;
     background: linear-gradient(to top, $primary-purple, $secondary-pink);
     border-radius: 5px 5px 0 0;
     animation: spectrumBounce 1.5s ease-in-out infinite;
-    
+
     @for $i from 1 through 15 {
       &:nth-child(#{$i}) {
         animation-delay: $i * 0.1s;
@@ -445,7 +445,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
 // Seção de redes sociais
 .social-section {
   margin: 40px 0;
-  
+
   .section-title {
     font-size: clamp(20px, 4vw, 24px);
     color: white;
@@ -453,7 +453,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
     margin-bottom: 8px;
     font-weight: 600;
   }
-  
+
   .section-subtitle {
     font-size: clamp(14px, 3vw, 16px);
     color: rgba(255, 255, 255, 0.7);
@@ -467,12 +467,12 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 15px;
   width: 100%;
-  
+
   @media (max-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
-  
+
   @media (max-width: 400px) {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -494,18 +494,18 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   overflow: hidden;
   animation: fadeInUp 0.8s ease-out;
   animation-fill-mode: both;
-  
+
   @for $i from 1 through 10 {
     &:nth-child(#{$i}) {
       animation-delay: $i * 0.1s;
     }
   }
-  
+
   &:hover {
     transform: translateY(-2px) !important;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
   }
-  
+
   .link-icon {
     width: 40px;
     height: 40px;
@@ -515,19 +515,19 @@ $glass-effect: rgba(255, 255, 255, 0.1);
     justify-content: center;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
-    
+
     mat-icon {
       color: white;
       font-size: 20px;
     }
   }
-  
+
   .link-text {
     flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
-    
+
     .link-title {
       font-size: 14px;
       font-weight: 600;
@@ -536,7 +536,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    
+
     .link-subtitle {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.7);
@@ -545,58 +545,61 @@ $glass-effect: rgba(255, 255, 255, 0.1);
       text-overflow: ellipsis;
     }
   }
-  
+
   // Cores específicas para cada rede social
   &.spotify {
     background: linear-gradient(135deg, #1DB954, #1ED760) !important;
   }
-  
+
   &.instagram {
     background: linear-gradient(135deg, #E4405F, #F77737) !important;
   }
-  
+
   &.youtube {
     background: linear-gradient(135deg, #FF0000, #FF3333) !important;
   }
-  
+
   &.tiktok {
     background: linear-gradient(135deg, #000000, #25F4EE, #FE2C55) !important;
   }
-  
+
   &.whatsapp {
     background: linear-gradient(135deg, #25D366, #128C7E) !important;
   }
-  
+  &.pix{
+    background: linear-gradient(135deg, #00BFA5, #1DE9B6) !important;
+  }
+
   &.website {
     background: linear-gradient(135deg, $accent-blue, #21CBF3) !important;
   }
-  
+
   &.email {
     background: linear-gradient(135deg, #EA4335, #FBBC05) !important;
   }
-  
+
   &.facebook {
     background: linear-gradient(135deg, #1877F2, #0A7CFF) !important;
   }
-  
+
   @media (max-width: 480px) {
     min-height: 55px;
     padding: 10px !important;
-    
+
     .link-icon {
       width: 35px;
       height: 35px;
-      
+
       mat-icon {
         font-size: 18px;
       }
     }
-    
+
     .link-text {
       .link-title {
         font-size: 13px;
       }
-      
+
       .link-subtitle {
         font-size: 11px;
       }
@@ -613,7 +616,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   margin-top: 40px;
   padding-top: 25px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  
+
   .meta-item {
     display: flex;
     align-items: center;
@@ -624,13 +627,13 @@ $glass-effect: rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    
+
     mat-icon {
       font-size: 18px;
       color: $accent-blue;
     }
   }
-  
+
   @media (max-width: 480px) {
     flex-direction: column;
     align-items: center;
@@ -648,7 +651,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   overflow: hidden;
   z-index: 1;
   pointer-events: none;
-  
+
   .wave {
     position: absolute;
     bottom: 0;
@@ -663,7 +666,7 @@ $glass-effect: rgba(255, 255, 255, 0.1);
       transparent
     );
     animation: waveScroll 6s linear infinite;
-    
+
     &:nth-child(1) {
       animation-delay: 0s;
       opacity: 0.8;
@@ -701,21 +704,21 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   .music-card {
     padding: 15px;
   }
-  
+
   .card-content-wrapper {
     padding: 10px;
     margin: 10px auto;
   }
-  
+
   .card-content {
     padding: 25px 20px;
   }
-  
+
   .card-header {
     gap: 25px;
     margin-bottom: 30px;
   }
-  
+
   .vinyl-player-section .turntable {
     width: 180px;
     height: 180px;
@@ -726,17 +729,17 @@ $glass-effect: rgba(255, 255, 255, 0.1);
   .music-card {
     padding: 10px;
   }
-  
+
   .card-content {
     padding: 20px 15px;
     border-radius: 20px;
   }
-  
+
   .vinyl-player-section .turntable {
     width: 150px;
     height: 150px;
   }
-  
+
   .turntable-arm {
     display: none;
   }

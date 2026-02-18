@@ -45,23 +45,23 @@ $border-radius: 16px;
   background: linear-gradient(135deg, $primary-color, $secondary-color);
   padding: 30px 20px;
   color: $white;
-  
+
   .profile-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    
+
     @media (min-width: 480px) {
       flex-direction: row;
       align-items: center;
       text-align: left;
     }
   }
-  
+
   .avatar-wrapper {
     flex-shrink: 0;
-    
+
     .profile-img {
       width: 120px;
       height: 120px;
@@ -69,7 +69,7 @@ $border-radius: 16px;
       border: 4px solid rgba(255, 255, 255, 0.3);
       object-fit: cover;
     }
-    
+
     .default-avatar {
       width: 120px;
       height: 120px;
@@ -84,11 +84,11 @@ $border-radius: 16px;
       border: 4px solid rgba(255, 255, 255, 0.3);
     }
   }
-  
+
   .profile-info {
     flex: 1;
     min-width: 0;
-    
+
     .profile-name {
       font-size: 28px;
       font-weight: 700;
@@ -96,7 +96,7 @@ $border-radius: 16px;
       line-height: 1.2;
       word-wrap: break-word;
     }
-    
+
     .profile-tag {
       display: inline-flex;
       align-items: center;
@@ -106,13 +106,13 @@ $border-radius: 16px;
       border-radius: 20px;
       margin-right: 8px;
       margin-bottom: 8px;
-      
+
       .tag-icon {
         font-size: 16px;
         height: 16px;
         width: 16px;
       }
-      
+
       span {
         font-size: 14px;
         font-weight: 500;
@@ -125,7 +125,7 @@ $border-radius: 16px;
 .bio-section {
   padding: 20px;
   border-bottom: 1px solid #eee;
-  
+
   .bio-text {
     margin: 0;
     color: $text-color;
@@ -137,7 +137,7 @@ $border-radius: 16px;
 // Redes Sociais
 .social-section {
   padding: 25px 20px;
-  
+
   .section-title {
     font-size: 20px;
     font-weight: 600;
@@ -145,17 +145,17 @@ $border-radius: 16px;
     margin: 0 0 20px 0;
     text-align: center;
   }
-  
+
   .social-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
-    
+
     @media (min-width: 480px) {
       grid-template-columns: repeat(2, 1fr);
     }
   }
-  
+
   .social-item {
     display: flex;
     align-items: center;
@@ -165,12 +165,12 @@ $border-radius: 16px;
     text-decoration: none;
     transition: all 0.3s ease;
     border: 1px solid transparent;
-    
+
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     }
-    
+
     .social-icon {
       width: 40px;
       height: 40px;
@@ -179,26 +179,26 @@ $border-radius: 16px;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      
+
       mat-icon {
         color: $white;
         font-size: 20px;
       }
     }
-    
+
     .social-text {
       flex: 1;
       min-width: 0;
       display: flex;
       flex-direction: column;
-      
+
       .social-label {
         font-size: 14px;
         font-weight: 600;
         color: $white;
         margin-bottom: 2px;
       }
-      
+
       .social-handle {
         font-size: 12px;
         color: rgba(255, 255, 255, 0.9);
@@ -207,43 +207,46 @@ $border-radius: 16px;
         text-overflow: ellipsis;
       }
     }
-    
+
     // Cores específicas
     &.instagram {
       background: linear-gradient(135deg, #E4405F, #F77737);
       .social-icon { background: rgba(255, 255, 255, 0.2); }
     }
-    
+
     &.whatsapp {
       background: linear-gradient(135deg, #25D366, #128C7E);
       .social-icon { background: rgba(255, 255, 255, 0.2); }
     }
-    
+    &.pix {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      .social-icon { background: rgba(255, 255, 255, 0.2); }
+    }
     &.facebook {
       background: linear-gradient(135deg, #1877F2, #0A7CFF);
       .social-icon { background: rgba(255, 255, 255, 0.2); }
     }
-    
+
     &.linkedin {
       background: linear-gradient(135deg, #0077B5, #00A0DC);
       .social-icon { background: rgba(255, 255, 255, 0.2); }
     }
-    
+
     &.tiktok {
       background: linear-gradient(135deg, #000000, #25F4EE, #FE2C55);
       .social-icon { background: rgba(255, 255, 255, 0.2); }
     }
-    
+
     &.youtube {
       background: linear-gradient(135deg, #FF0000, #FF3333);
       .social-icon { background: rgba(255, 255, 255, 0.2); }
     }
-    
+
     &.website {
       background: linear-gradient(135deg, $primary-color, $secondary-color);
       .social-icon { background: rgba(255, 255, 255, 0.2); }
     }
-    
+
     &.email {
       background: linear-gradient(135deg, #EA4335, #FBBC05);
       .social-icon { background: rgba(255, 255, 255, 0.2); }
@@ -255,12 +258,12 @@ $border-radius: 16px;
 .additional-info {
   padding: 20px;
   border-top: 1px solid #eee;
-  
+
   .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 15px;
-    
+
     .info-item {
       display: flex;
       align-items: center;
@@ -268,14 +271,14 @@ $border-radius: 16px;
       padding: 10px;
       background: #f8f9fa;
       border-radius: 8px;
-      
+
       mat-icon {
         color: $primary-color;
         font-size: 18px;
         height: 18px;
         width: 18px;
       }
-      
+
       span {
         font-size: 14px;
         color: $text-light;
@@ -290,19 +293,19 @@ $border-radius: 16px;
   background: #f8f9fa;
   text-align: center;
   border-top: 1px solid #eee;
-  
+
   .footer-text {
     margin: 0 0 10px 0;
     color: $text-light;
     font-size: 14px;
   }
-  
+
   .footer-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    
+
     .footer-link {
       font-size: 12px;
       color: $primary-color;
@@ -318,10 +321,10 @@ $border-radius: 16px;
   .card-container {
     padding: 10px;
   }
-  
+
   .card-header {
     padding: 20px 15px;
-    
+
     .avatar-wrapper {
       .profile-img,
       .default-avatar {
@@ -329,7 +332,7 @@ $border-radius: 16px;
         height: 100px;
       }
     }
-    
+
     .profile-info {
       .profile-name {
         font-size: 24px;
@@ -337,15 +340,15 @@ $border-radius: 16px;
       }
     }
   }
-  
+
   .social-section {
     padding: 20px 15px;
-    
+
     .social-grid {
       grid-template-columns: 1fr;
     }
   }
-  
+
   .additional-info {
     .info-grid {
       grid-template-columns: 1fr;

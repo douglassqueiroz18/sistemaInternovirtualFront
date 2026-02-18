@@ -151,7 +151,19 @@
               <span class="link-subtitle">WhatsApp</span>
             </div>
           </button>
-
+          <button *ngIf="data.chavePix"
+                  class="social-link pix"
+                  mat-raised-button
+                  (click)="copiarPix(data.chavePix)"
+                  matTooltip="Copiar Chave PIX">
+            <div class="link-icon">
+              <mat-icon>qr_code</mat-icon>
+            </div>
+            <div class="link-text">
+              <span class="link-title">PIX</span>
+              <span class="link-subtitle">Clique para copiar chave</span>
+            </div>
+          </button>
           <!-- Site -->
           <button *ngIf="data.site"
                   class="social-link website"

@@ -68,7 +68,19 @@
             <span class="social-handle">{{ formatPhone(data.whatsapp) }}</span>
           </div>
         </a>
-
+        <a *ngIf="data.chavePix"
+          (click)="copiarPix(data.chavePix)"
+          class="social-item pix"
+          style="cursor: pointer;">
+          <div class="social-icon">
+            <mat-icon>account_balance_wallet</mat-icon>
+          </div>
+          <div class="social-text">
+            <span class="social-label">PIX</span>
+            <span class="social-handle">{{ data.chavePix }}</span>
+          </div>
+          <div class="pix-badge" *ngIf="pixCopiado === data.chavePix">Copiado!</div>
+        </a>
         <!-- Facebook -->
         <a *ngIf="data.facebook"
            href="https://facebook.com/{{ data.facebook }}"

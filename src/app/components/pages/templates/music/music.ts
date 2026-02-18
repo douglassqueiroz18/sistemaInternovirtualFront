@@ -9,8 +9,8 @@ import { PageData } from '../../../models/page-data.model';
   selector: 'app-music',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatButtonModule, 
+    CommonModule,
+    MatButtonModule,
     MatIconModule,
     MatTooltipModule
   ],
@@ -19,7 +19,7 @@ import { PageData } from '../../../models/page-data.model';
 })
 export class Music implements OnInit, OnDestroy {
   @Input() data!: PageData;
-
+  pixCopiado: string | null = null;
   vinylPlaying = false;
   spectrumBars: { height: number }[] = [];
   private spectrumInterval: any;
@@ -61,17 +61,30 @@ export class Music implements OnInit, OnDestroy {
   toggleVinyl() {
     this.vinylPlaying = !this.vinylPlaying;
   }
+  
+  // Copia chave PIX para a área de transferência
+  copiarPix(chave: string) {
+    navigator.clipboard.writeText(chave).then(() => {
+      this.pixCopiado = chave;
+      setTimeout(() => {
+        this.pixCopiado = null;
+      }, 2000);
+      alert('Chave PIX copiada: ' + chave);
+    }).catch(err => {
+      console.error('Erro ao copiar PIX:', err);
+    });
+  }
 
   // Abre links
   openLink(url: string): void {
     let finalUrl = url;
-    
-    if (!url.startsWith('http://') && 
-        !url.startsWith('https://') && 
+
+    if (!url.startsWith('http://') &&
+        !url.startsWith('https://') &&
         !url.startsWith('mailto:')) {
       finalUrl = 'https://' + url;
     }
-    
+
     window.open(finalUrl, '_blank');
   }
 
@@ -111,7 +124,7 @@ export class Music implements OnInit, OnDestroy {
     else {
       style['background'] = 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)';
     }
-    
+
     return style;
   }
 

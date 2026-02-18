@@ -20,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class Medic implements OnInit{
   @Input() data!: PageData;
   emailCopied = false;
-
+  pixCopiado: string | null = null;
 socialButtons = [
     {
       key: 'whatsapp',
@@ -106,7 +106,17 @@ socialButtons = [
 
     window.open(finalUrl, '_blank');
   }
-
+  copiarPix(chave: string) {
+  navigator.clipboard.writeText(chave).then(() => {
+    this.pixCopiado = chave;
+    setTimeout(() => {
+      this.pixCopiado = null;
+    }, 2000);
+    alert('Chave PIX copiada para a área de transferência!');
+  }).catch(err => {
+    console.error('Erro ao copiar PIX:', err);
+  });
+}
   // Estilo do cartão (mantém sua lógica original)
   getCardStyle(): { [key: string]: string } {
     const style: { [key: string]: string } = {};
