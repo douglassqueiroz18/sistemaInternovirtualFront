@@ -327,8 +327,6 @@ export class EditPage implements OnInit {
 
   if ((hasBackground || hasTempBackground) && hasLogoBackground) {
     this.showError('Você só pode ter um fundo por vez: fundo da página OU fundo do logo. Remova um deles.');
-      this.loading = false; // ← adicione esta linha
-
     return;
   }
     this.loading = true;
@@ -353,14 +351,17 @@ export class EditPage implements OnInit {
     if (this.logoBackgroundBlobUrl) {
       URL.revokeObjectURL(this.logoBackgroundBlobUrl); // Libera memória
       this.logoBackgroundBlobUrl = null;
+      this.cdr.detectChanges();
     }
     this.tempBackgroundFile = null;
   }
   // Método para remover imagem de logoBackground existente
   removeBackgroundImage() {
+    this.removeTempBackground();
     if (this.pageData && this.pageData.logoBackground.startsWith('http')) {
       // Aqui você poderia chamar um endpoint para deletar a imagem do servidor
       this.pageData.logoBackground = '';
+      this.removeTempBackground();
       this.cdr.detectChanges();
     }
   }
