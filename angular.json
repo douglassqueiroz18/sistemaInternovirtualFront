@@ -29,7 +29,7 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest.json"
             ],
             "styles": [
               "src/styles.scss",
