@@ -412,6 +412,10 @@
         border-color: rgba(255, 255, 255, 0.4);
       }
 
+      &.pix {
+        background: linear-gradient(135deg, #25D366 0%, darken(#25D366, 10%) 100%) !important;
+        border-color: rgba(255, 255, 255, 0.4);
+      }
       &.email {
         background: linear-gradient(135deg, #7b1fa2 0%, #ba68c8 100%);
       }

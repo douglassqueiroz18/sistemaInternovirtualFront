@@ -186,7 +186,14 @@
                 placeholder="Ex: 11999999999"
               />
             </mat-form-field>
-
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Chave Pix</mat-label>
+              <input
+                matInput
+                [(ngModel)]="pageData.chavePix"
+                name="chavePix"
+              />
+            </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Facebook (URL)</mat-label>
               <input

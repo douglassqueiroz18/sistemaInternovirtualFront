@@ -17,6 +17,7 @@ import { PageData } from '../../../models/page-data.model';
 })
 export class Law implements OnInit {
   @Input() data!: PageData;
+  pixCopiado: string | null = null;
 
   // Configuração dos botões sociais baseados nos dados disponíveis
   socialButtons = [
@@ -110,7 +111,19 @@ export class Law implements OnInit {
 
     window.open(finalUrl, '_blank');
   }
+  copiarPix(chave: string) {
+  navigator.clipboard.writeText(chave).then(() => {
+    this.pixCopiado = chave;
+    setTimeout(() => {
+      this.pixCopiado = null;
+    }, 2000);
 
+    // Opcional: mostrar mensagem de sucesso
+    alert('PIX copiado!');
+  }).catch(err => {
+    console.error('Erro ao copiar PIX:', err);
+  });
+}
   // Estilo do cartão (mantém sua lógica original)
   getCardStyle(): { [key: string]: string } {
     const style: { [key: string]: string } = {};

@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class DefaultTemplate implements OnInit {
   @Input() data: any = {};
+    pixCopiado: string | null = null;
+
 showEmbeddedMap = true; // Controla se mostra o mapa embed
   ngOnInit() {
     // Inicializa dados padrão se vazio
@@ -106,6 +108,19 @@ copyToClipboard(text: string): void {
   navigator.clipboard.writeText(text).then(() => {
     // Mostrar toast de sucesso
     alert('Endereço copiado!');
+  });
+}
+copiarPix(chave: string) {
+  navigator.clipboard.writeText(chave).then(() => {
+    this.pixCopiado = chave;
+    setTimeout(() => {
+      this.pixCopiado = null;
+    }, 2000);
+
+    // Opcional: mostrar mensagem de sucesso
+    alert('PIX copiado!');
+  }).catch(err => {
+    console.error('Erro ao copiar PIX:', err);
   });
 }
 }

@@ -21,4 +21,6 @@ export interface PageData {
   especialidade: string;
   registroProfissional: string;
   convenio: string;
+  chavePix: string;
+
 }

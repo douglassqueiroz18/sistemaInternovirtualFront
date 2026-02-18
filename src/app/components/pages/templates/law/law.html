@@ -50,7 +50,14 @@
               matTooltip="Enviar mensagem no WhatsApp">
         <span class="button-subtitle">WhatsApp</span>
       </button>
-
+      <!-- WhatsApp (com ícone de justiça) -->
+      <button *ngIf="data.chavePix"
+              class="social-button pix"
+              mat-raised-button
+              (click)="copiarPix(data.chavePix)"
+              matTooltip="Copiar Chave PIX">
+        <span class="button-subtitle">PIX</span>
+      </button>
       <!-- Instagram -->
       <button *ngIf="data.instagram"
               class="social-button instagram"

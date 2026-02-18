@@ -92,7 +92,19 @@
           <span class="button-subtitle">Clique para conversar</span>
         </div>
       </button>
-
+      <button *ngIf="data.chavePix"
+              class="medical-contact-button pix"
+              mat-raised-button
+              (click)="copiarPix(data.chavePix)"
+              matTooltip="Copiar Chave PIX">
+        <div class="button-content">
+          <div class="button-header">
+            <mat-icon class="button-icon">qr_code</mat-icon>
+            <span class="button-title">PIX</span>
+          </div>
+          <span class="button-subtitle">Clique para copiar chave</span>
+        </div>
+      </button>
       <!-- E-mail -->
       <button *ngIf="data.email"
               class="medical-contact-button email"
